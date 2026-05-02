@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace — Luca's ID</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --gold: #c9a84c; --gold2: #e8c97a; --gold3: #8a6820;
+      --bg: #07070a; --bg2: #0d0d12; --bg3: #111118;
+      --border: rgba(201,168,76,0.15); --border2: rgba(201,168,76,0.3);
+      --text: #f0ece0; --text2: #9b9480; --text3: #5a5444;
+      --green: rgba(74,222,128,1); --green-dim: rgba(74,222,128,0.1); --green-border: rgba(74,222,128,0.25);
+      --blue: rgba(96,165,250,1); --blue-dim: rgba(96,165,250,0.1); --blue-border: rgba(96,165,250,0.25);
+      --red: rgba(248,113,113,1); --red-dim: rgba(248,113,113,0.1); --red-border: rgba(248,113,113,0.25);
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: url('1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #loader { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1s ease, visibility 1s ease; }
+    #loader.hide { opacity: 0; visibility: hidden; }
+    .loader-ring { width: 64px; height: 64px; border: 1px solid var(--border2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1.2s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-text { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 0.5em; color: var(--text3); text-transform: uppercase; margin-top: 24px; animation: fadePulse 1.5s ease-in-out infinite; }
+    @keyframes fadePulse { 0%, 100% { opacity: 0.4 } 50% { opacity: 1 } }
+
+    .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+    .bg-vignette { position: fixed; inset: 0; background: radial-gradient(ellipse at center, rgba(7,7,10,0.4) 20%, rgba(7,7,10,0.95) 100%); pointer-events: none; z-index: 0; }
+    .bg-glow { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
+    .glow-top { width: 600px; height: 300px; background: rgba(201,168,76,0.04); top: -100px; left: 50%; transform: translateX(-50%); }
+    .glow-left { width: 300px; height: 500px; background: rgba(201,168,76,0.03); bottom: 20%; left: -100px; }
+    .glow-right { width: 300px; height: 500px; background: rgba(100,80,200,0.04); top: 30%; right: -100px; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity: 0.5; pointer-events: none; z-index: 1; }
+
+    .wrapper { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0 20px 80px; }
+
+    .topbar { width: 100%; max-width: 680px; display: flex; align-items: center; justify-content: space-between; padding: 32px 0 0; opacity: 0; transform: translateY(-16px); transition: all 0.8s ease 0.2s; }
+    .topbar.show { opacity: 1; transform: translateY(0); }
+    .topbar-brand { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 0.4em; color: var(--text3); text-transform: uppercase; }
+    .topbar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); opacity: 0.6; animation: fadePulse 2s ease-in-out infinite; }
+    .topbar-status { font-size: 11px; letter-spacing: 0.15em; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+    .status-live { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.6); animation: fadePulse 1.5s infinite; }
+
+    .back-row { width: 100%; max-width: 680px; display: flex; align-items: center; justify-content: space-between; margin-top: 36px; opacity: 0; transform: translateY(12px); transition: all 0.7s ease 0.35s; }
+    .back-row.show { opacity: 1; transform: translateY(0); }
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.25em; color: var(--text3); text-transform: uppercase; text-decoration: none; padding: 10px 18px; border: 1px solid var(--border); border-radius: 100px; background: rgba(13,13,18,0.5); backdrop-filter: blur(16px); transition: all 0.3s; }
+    .back-btn:hover { border-color: var(--border2); color: var(--gold); }
+    .back-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .history-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.2em; color: var(--blue); text-transform: uppercase; padding: 10px 18px; border: 1px solid var(--blue-border); border-radius: 100px; background: var(--blue-dim); cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif; }
+    .history-btn:hover { background: rgba(96,165,250,0.2); box-shadow: 0 4px 20px rgba(96,165,250,0.15); }
+    .history-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .hero { text-align: center; padding: 36px 0 24px; width: 100%; max-width: 680px; opacity: 0; transform: translateY(24px); transition: all 1s ease 0.45s; }
+    .hero.show { opacity: 1; transform: translateY(0); }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 0.55em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; padding: 8px 20px; border: 1px solid var(--border); border-radius: 100px; background: rgba(201,168,76,0.04); }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: '—'; opacity: 0.4; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px,8vw,64px); font-weight: 300; line-height: 1; letter-spacing: -0.01em; color: var(--text); margin-bottom: 6px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    .hero-title em { font-style: italic; background: linear-gradient(135deg, var(--gold2), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-title-sub { font-family: 'Cormorant Garamond', serif; font-size: clamp(11px,2.5vw,15px); font-weight: 300; letter-spacing: 0.35em; color: var(--text3); text-transform: uppercase; margin-bottom: 14px; }
+
+    .ornamental-divider { display: flex; align-items: center; gap: 12px; margin: 28px auto; width: 100%; max-width: 300px; }
+    .div-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); }
+    .div-gem { font-size: 10px; color: var(--gold); padding: 0 4px; }
+
+    .progress-wrap { width: 100%; max-width: 680px; margin-bottom: 28px; opacity: 0; transform: translateY(12px); transition: all 0.8s ease 0.6s; }
+    .progress-wrap.show { opacity: 1; transform: translateY(0); }
+    .progress-bar { display: flex; align-items: center; justify-content: center; gap: 0; }
+    .p-step { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; }
+    .p-step-circle { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: rgba(13,13,18,0.6); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text3); transition: all 0.4s; }
+    .p-step-circle svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+    .p-step.active .p-step-circle { border-color: var(--gold); background: rgba(201,168,76,0.12); color: var(--gold); }
+    .p-step.done .p-step-circle { border-color: var(--green-border); background: var(--green-dim); color: var(--green); }
+    .p-step-label { font-size: 10px; letter-spacing: 0.15em; color: var(--text3); text-transform: uppercase; white-space: nowrap; }
+    .p-step.active .p-step-label { color: var(--gold); }
+    .p-step.done .p-step-label { color: var(--green); }
+    .p-line { flex: 1; height: 1px; background: var(--border); margin: 0 8px; margin-bottom: 20px; max-width: 80px; transition: background 0.4s; }
+    .p-line.done { background: var(--green-border); }
+
+    .main-content { width: 100%; max-width: 680px; }
+    .step-section { display: none; opacity: 0; }
+    .step-section.active { display: block; animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: translateY(0) } }
+
+    .section-label { font-size: 10px; letter-spacing: 0.5em; color: var(--text3); text-transform: uppercase; text-align: left; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .product-card { border: 1px solid var(--border); border-radius: 20px; background: rgba(13,13,18,0.6); backdrop-filter: blur(16px); padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.35s cubic-bezier(0.23,1,0.32,1); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; overflow: hidden; }
+    .product-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+    .product-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+    .product-card:hover::before { opacity: 1; }
+    .product-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(201,168,76,0.15); }
+    .product-card.selected::before { opacity: 1; }
+    .product-card.selected .pc-check { opacity: 1; transform: scale(1); }
+    .pc-check { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.5); transition: all 0.3s; }
+    .pc-check svg { width: 11px; height: 11px; stroke: #07070a; fill: none; stroke-width: 3; }
+    .pc-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(201,168,76,0.07); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--gold); transition: all 0.3s; }
+    .pc-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .product-card.selected .pc-icon { background: rgba(201,168,76,0.2); border-color: var(--border2); }
+    .pc-name { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: 0.02em; }
+    .pc-price { font-size: 12px; font-weight: 600; color: var(--gold); letter-spacing: 0.05em; }
+
+    .skeleton { border-radius: 12px; background: linear-gradient(90deg, rgba(201,168,76,0.04) 25%, rgba(201,168,76,0.09) 50%, rgba(201,168,76,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.6s infinite; }
+    @keyframes shimmer { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
+
+    .glass-card { border: 1px solid var(--border); border-radius: 24px; background: rgba(13,13,18,0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); position: relative; }
+    .glass-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); border-radius: 24px 24px 0 0; }
+
+    .input-field { width: 100%; padding: 15px 18px; background: rgba(13,13,18,0.5); border: 1px solid var(--border); border-radius: 14px; color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 300; outline: none; transition: all 0.3s; }
+    .input-field::placeholder { color: var(--text3); }
+    .input-field:focus { border-color: var(--border2); background: rgba(13,13,18,0.8); box-shadow: 0 0 0 3px rgba(201,168,76,0.06); }
+    label.input-label { display: block; font-size: 10px; letter-spacing: 0.35em; color: var(--text3); text-transform: uppercase; margin-bottom: 8px; }
+
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 15px 28px; border-radius: 14px; cursor: pointer; border: none; background: linear-gradient(135deg, var(--gold2), var(--gold)); color: var(--bg); font-family: 'Outfit', sans-serif; transition: all 0.3s; }
+    .btn-primary:hover:not(:disabled) { box-shadow: 0 6px 24px rgba(201,168,76,0.35); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.25; cursor: not-allowed; }
+    .btn-primary svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+    .btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 15px 28px; border-radius: 14px; cursor: pointer; border: 1px solid var(--border); background: rgba(13,13,18,0.4); color: var(--text2); font-family: 'Outfit', sans-serif; transition: all 0.3s; }
+    .btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+    .btn-secondary svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .btn-row .btn-primary, .btn-row .btn-secondary { flex: 1; min-width: 140px; }
+
+    .pay-method { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border: 1px solid var(--border); border-radius: 14px; background: rgba(13,13,18,0.4); }
+    .pay-method-left { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; color: var(--text2); }
+    .pay-method-left svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; color: var(--text3); }
+    .pay-badge { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; padding: 4px 10px; border-radius: 100px; background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+
+    .qris-wrap { text-align: center; }
+    .qris-status-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; padding: 8px 18px; border-radius: 100px; border: 1px solid rgba(234,179,8,0.3); background: rgba(234,179,8,0.08); color: #eab308; margin-bottom: 24px; }
+    .qris-pulse { width: 8px; height: 8px; border-radius: 50%; background: #eab308; animation: pulseDot 1.5s ease-in-out infinite; }
+    @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.4); opacity: 0.6 } }
+    .qris-img-wrap { background: white; border-radius: 24px; padding: 16px; display: inline-block; margin-bottom: 24px; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+    .qris-img-wrap img { width: 200px; height: 200px; object-fit: contain; display: block; }
+    .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .info-chip { border: 1px solid var(--border); border-radius: 16px; background: rgba(13,13,18,0.5); padding: 16px; }
+    .info-chip-label { font-size: 10px; letter-spacing: 0.3em; color: var(--text3); text-transform: uppercase; margin-bottom: 6px; }
+    .info-chip-value { font-size: 16px; font-weight: 700; color: var(--text); }
+    #timer { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--red); }
+
+    .upload-zone { width: 100%; border: 1px dashed var(--border2); border-radius: 16px; padding: 36px 20px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative; }
+    .upload-zone:hover { border-color: var(--gold); background: rgba(201,168,76,0.03); }
+    .upload-zone svg { width: 32px; height: 32px; stroke: var(--text3); fill: none; stroke-width: 1.5; margin: 0 auto 10px; display: block; }
+    .upload-zone p { font-size: 13px; color: var(--text3); }
+    .upload-zone.has-file { border-color: var(--green-border); background: var(--green-dim); }
+    .upload-zone.has-file svg { stroke: var(--green); }
+    .upload-zone.has-file p { color: var(--green); }
+
+    .success-header { background: linear-gradient(135deg, var(--gold3), var(--gold)); padding: 36px; text-align: center; border-radius: 22px 22px 0 0; }
+    .success-checkmark { width: 64px; height: 64px; border-radius: 50%; background: rgba(7,7,10,0.2); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .success-checkmark svg { width: 30px; height: 30px; stroke: #07070a; fill: none; stroke-width: 3; }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--bg); letter-spacing: 0.02em; }
+    .receipt-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-key { font-size: 12px; color: var(--text3); letter-spacing: 0.1em; }
+    .receipt-val { font-size: 13px; font-weight: 600; color: var(--text); }
+    .link-access-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(13,13,18,0.4); text-decoration: none; transition: all 0.3s; margin-bottom: 8px; }
+    .link-access-item:hover { border-color: var(--blue-border); background: var(--blue-dim); }
+    .link-access-item span { font-size: 13px; font-weight: 600; color: var(--text2); }
+    .link-access-item svg { width: 14px; height: 14px; stroke: var(--text3); fill: none; stroke-width: 2; }
+    .link-access-item:hover span { color: var(--blue); }
+    .link-access-item:hover svg { stroke: var(--blue); }
+
+    .modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(7,7,10,0.85); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box { width: 100%; max-width: 420px; background: rgba(13,13,18,0.9); backdrop-filter: blur(25px); border: 1px solid var(--border2); border-radius: 28px; padding: 36px; position: relative; transform: translateY(24px) scale(0.97); transition: all 0.4s cubic-bezier(0.22,1,0.36,1); box-shadow: 0 40px 80px rgba(0,0,0,0.8); max-height: 85vh; overflow-y: auto; }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+    .modal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); border-radius: 28px 28px 0 0; }
+    .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text3); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--text); margin-bottom: 20px; letter-spacing: 0.02em; }
+    .modal-title em { font-style: italic; color: var(--gold2); }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(13,13,18,0.4); margin-bottom: 8px; }
+    .history-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .history-item-date { font-size: 11px; color: var(--text3); letter-spacing: 0.05em; }
+    .history-status { font-size: 9px; letter-spacing: 0.12em; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+    .h-empty { text-align: center; padding: 40px 0; color: var(--text3); }
+    .h-empty svg { width: 32px; height: 32px; stroke: currentColor; fill: none; stroke-width: 1.2; margin: 0 auto 12px; display: block; opacity: 0.4; }
+    .h-empty p { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; }
+
+    .site-footer { width: 100%; max-width: 680px; margin-top: 56px; text-align: center; opacity: 0; transition: opacity 1s ease 0.9s; }
+    .site-footer.show { opacity: 1; }
+    .footer-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin-bottom: 24px; }
+    .footer-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; color: var(--text3); letter-spacing: 0.15em; margin-bottom: 8px; }
+    .footer-meta { font-size: 10px; letter-spacing: 0.4em; color: var(--text3); opacity: 0.5; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Memuat Toko</div>
+  </div>
+
+  <div class="bg-grid"></div>
+  <div class="bg-vignette"></div>
+  <div class="bg-glow glow-top"></div>
+  <div class="bg-glow glow-left"></div>
+  <div class="bg-glow glow-right"></div>
+
+  <div class="wrapper">
+    
+    <div class="topbar" id="topbar">
+      <div class="topbar-brand">Luca's ID</div>
+      <div class="topbar-dot"></div>
+      <div class="topbar-status"><span class="status-live"></span>Store Aktif</div>
+    </div>
+
+    <div class="back-row" id="backRow">
+      <a href="index.html" class="back-btn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Kembali
+      </a>
+      <button class="history-btn" onclick="openModal()">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Cek Pesanan
+      </button>
+    </div>
+
+    <div class="hero" id="hero">
+      <div class="hero-eyebrow">Digital Premium</div>
+      <div class="hero-title">Luca's <em>Store</em></div>
+      <div class="hero-title-sub">Marketplace — Produk Digital</div>
+    </div>
+
+    <div class="ornamental-divider">
+      <div class="div-line"></div>
+      <div class="div-gem">◆</div>
+      <div class="div-line"></div>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar">
+        <div class="p-step active" id="ps1">
+          <div class="p-step-circle">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </div>
+          <span class="p-step-label">Paket</span>
+        </div>
+        <div class="p-line" id="pl1"></div>
+        <div class="p-step" id="ps2">
+          <div class="p-step-circle">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="p-step-label">Data</span>
+        </div>
+        <div class="p-line" id="pl2"></div>
+        <div class="p-step" id="ps3">
+          <div class="p-step-circle">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <span class="p-step-label">Bayar</span>
+        </div>
+        <div class="p-line" id="pl3"></div>
+        <div class="p-step" id="ps4">
+          <div class="p-step-circle">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="p-step-label">Selesai</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content" id="mainContent" style="opacity:0; transform:translateY(28px); transition:all 0.9s ease 0.75s;">
+      
+      <section id="step-1" class="step-section active">
+        <div class="section-label" style="margin-bottom:20px;">Pilih Paket</div>
+        <div class="product-grid" id="product-grid">
+          <div style="border:1px solid var(--border); border-radius:20px; height:160px;" class="skeleton"></div>
+          <div style="border:1px solid var(--border); border-radius:20px; height:160px; opacity:0.6;" class="skeleton"></div>
+          <div style="border:1px solid var(--border); border-radius:20px; height:160px; opacity:0.3;" class="skeleton"></div>
+        </div>
+        <div style="text-align:right;">
+          <button onclick="goToStep(2)" id="next-to-data" disabled class="btn-primary">
+            Lanjutkan
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="step-2" class="step-section">
+        <div class="glass-card" style="padding:32px;">
+          <div style="text-align:center; margin-bottom:28px;">
+            <div style="width:52px; height:52px; border-radius:16px; background:var(--blue-dim); border:1px solid var(--blue-border); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; color:var(--blue);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div style="font-family:'Cormorant Garamond', serif; font-size:26px; font-weight:300; color:var(--text); margin-bottom:6px;">Informasi <em style="font-style:italic; color:var(--gold2);">Akun</em></div>
+            <div style="font-size:13px; color:var(--text2); font-weight:300;">Pastikan data sesuai untuk pengiriman akses.</div>
+          </div>
+          <div style="max-width:420px; margin:0 auto;">
+            <div style="margin-bottom:20px;">
+              <label class="input-label">Username / Telegram ID</label>
+              <input type="text" id="buyer-id" class="input-field" placeholder="@username">
+            </div>
+            <div style="margin-bottom:8px;">
+              <label class="input-label">Metode Pembayaran</label>
+              <div class="pay-method">
+                <div class="pay-method-left">
+                  <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                  QRIS Real-time
+                </div>
+                <span class="pay-badge">Aktif</span>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button onclick="goToStep(1)" class="btn-secondary">
+                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                Kembali
+              </button>
+              <button onclick="processPayment()" class="btn-primary">
+                Konfirmasi
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="step-3" class="step-section">
+        <div class="glass-card" style="padding:32px;">
+          <div class="qris-wrap">
+            <div class="qris-status-badge">
+              <span class="qris-pulse"></span>
+              Menunggu Pembayaran
+            </div>
+            <div style="font-family:'Cormorant Garamond', serif; font-size:30px; font-weight:300; color:var(--text); margin-bottom:20px;">Scan <em style="font-style:italic; color:var(--gold2);">QRIS</em></div>
+            <div class="qris-img-wrap">
+              <img src="qris.png" alt="QRIS" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg'">
+            </div>
+            <div class="info-row">
+              <div class="info-chip">
+                <div class="info-chip-label">Total Tagihan</div>
+                <div class="info-chip-value" id="final-price">Rp 0</div>
+              </div>
+              <div class="info-chip">
+                <div class="info-chip-label">Sisa Waktu</div>
+                <div class="info-chip-value"><span id="timer">01:00:00</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:4px; margin-bottom:20px;">
+            <div class="section-label" style="margin-bottom:12px;">Upload Bukti Bayar</div>
+            <label style="display:block; cursor:pointer;">
+              <div class="upload-zone" id="upload-zone">
+                <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                <p id="file-name">Klik untuk pilih foto bukti transfer</p>
+              </div>
+              <input type="file" id="proof-file" accept="image/*" style="display:none;" onchange="handleFileSelect()">
+            </label>
+          </div>
+
+          <button onclick="verifyPayment()" id="btn-verify" disabled class="btn-primary" style="width:100%;">
+            Verifikasi Sekarang
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="step-4" class="step-section">
+        <div class="glass-card" style="overflow:hidden; padding:0;">
+          <div class="success-header">
+            <div class="success-checkmark">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="success-title">Transaksi Berhasil</div>
+          </div>
+          <div style="padding:28px;">
+            <div style="margin-bottom:20px;">
+              <div class="receipt-row">
+                <span class="receipt-key">Username</span>
+                <span class="receipt-val" id="receipt-user" style="color:var(--blue);">@user</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-key">Produk</span>
+                <span class="receipt-val" id="receipt-product">—</span>
+              </div>
+              <div class="receipt-row" style="border-bottom:none;">
+                <span class="receipt-key">Status</span>
+                <span style="font-size:9px; letter-spacing:0.12em; font-weight:700; text-transform:uppercase; padding:4px 10px; border-radius:100px; background:var(--green-dim); border:1px solid var(--green-border); color:var(--green);">Sukses</span>
+              </div>
+            </div>
+
+            <div style="border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:20px;">
+              <div style="font-size:10px; letter-spacing:0.4em; color:var(--text3); text-transform:uppercase; margin-bottom:14px;">Link Akses</div>
+              <div id="receipt-links"></div>
+            </div>
+
+            <button onclick="window.location.reload()" class="btn-secondary" style="width:100%;">
+              <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.96"/></svg>
+              Transaksi Baru
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="site-footer" id="siteFooter">
+      <div class="footer-line"></div>
+      <div class="footer-logo-text">Luca's ID</div>
+      <div class="footer-meta">by @nopek &bull; 2026 &bull; All Rights Reserved</div>
+    </footer>
+
+  </div>
+
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-title">Riwayat <em>Pesanan</em></div>
+      <div style="margin-bottom:16px;">
+        <div style="position:relative;">
+          <input type="text" id="search-user-id" class="input-field" placeholder="Cari @username…" style="padding-left:42px;">
+          <span style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text3);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+        </div>
+        <button onclick="searchHistory()" class="btn-primary" style="width:100%; margin-top:10px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Cari Pesanan
+        </button>
+      </div>
+      <div id="history-results">
+        <div class="h-empty">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <p>Masukkan username untuk mencari</p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script src="jsonbin-config.js"></script>
+  <script>
+    let allProducts = [];
+    let allSales = [];
+    let selectedProduct = null;
+    let base64Image = "";
+    let timerInterval;
+
+    async function fetchDatabase() {
+      const grid = document.getElementById('product-grid');
+      try {
+        const data = await sbFetchAll();
+        allProducts = data.products || [];
+        allSales = data.sales || [];
+        grid.innerHTML = '';
+        
+        if (!allProducts.length) {
+          grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text3); font-size:13px;">Belum ada produk tersedia.</div>`;
+          return;
+        }
+        
+        allProducts.forEach(prod => {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.innerHTML = `
+            <span class="pc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <div class="pc-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div class="pc-name">${prod.name}</div>
+            <div class="pc-price">Rp ${parseInt(prod.price).toLocaleString('id-ID')}</div>
+          `;
+          card.onclick = () => {
+            document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedProduct = prod;
+            document.getElementById('next-to-data').disabled = false;
+          };
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--red); font-size:13px;">Gagal terhubung ke database.</div>`;
+      }
+    }
+
+    let currentStep = 1;
+    function goToStep(n) {
+      document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+      
+      if (n === 2) {
+        const buyer = document.getElementById('buyer-id').value.trim();
+        if (currentStep === 2 && !buyer) {
+          alert('Isi username Anda terlebih dahulu!');
+          return;
+        }
+      }
+      
+      setTimeout(() => {
+        document.getElementById(`step-${n}`).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 60);
+      
+      updateProgress(n);
+      currentStep = n;
+    }
+
+    function updateProgress(n) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`ps${i}`);
+        el.classList.remove('active', 'done');
+        if (i < n) el.classList.add('done');
+        else if (i === n) el.classList.add('active');
+      }
+      for (let i = 1; i <= 3; i++) {
+        const line = document.getElementById(`pl${i}`);
+        line.classList.toggle('done', i < n);
+      }
+    }
+
+    function processPayment() {
+      const buyer = document.getElementById('buyer-id').value.trim();
+      if (!buyer) {
+        alert('Isi username Anda terlebih dahulu!');
+        return;
+      }
+      
+      document.getElementById('final-price').textContent = `Rp ${parseInt(selectedProduct.price).toLocaleString('id-ID')}`;
+      document.getElementById('receipt-user').textContent = buyer;
+      document.getElementById('receipt-product').textContent = selectedProduct.name;
+      
+      const box = document.getElementById('receipt-links');
+      box.innerHTML = '';
+      
+      if (selectedProduct.links) {
+        selectedProduct.links.forEach((link, i) => {
+          box.innerHTML += `
+            <a href="${link}" target="_blank" class="link-access-item">
+              <span>Akses Link #${i+1}</span>
+              <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          `;
+        });
+      }
+      
+      startTimer(3600);
+      goToStep(3);
+    }
+
+    function startTimer(d) {
+      let t = d;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const h = String(Math.floor(t / 3600)).padStart(2, '0');
+        const m = String(Math.floor((t % 3600) / 60)).padStart(2, '0');
+        const s = String(t % 60).padStart(2, '0');
+        document.getElementById('timer').textContent = `${h}:${m}:${s}`;
+        if (--t < 0) {
+          clearInterval(timerInterval);
+          location.reload();
+        }
+      }, 1000);
+    }
+
+    function handleFileSelect() {
+      const file = document.getElementById('proof-file').files[0];
+      if (!file) return;
+      const zone = document.getElementById('upload-zone');
+      zone.classList.add('has-file');
+      document.getElementById('file-name').textContent = file.name;
+      const reader = new FileReader();
+      reader.onload = e => {
+        base64Image = e.target.result;
+        document.getElementById('btn-verify').disabled = false;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function verifyPayment() {
+      const btn = document.getElementById('btn-verify');
+      const origHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.textContent = 'Memproses…';
+      try {
+        const result = await sbUploadAndSale({
+          user:        document.getElementById('buyer-id').value,
+          productName: selectedProduct.name,
+          price:       selectedProduct.price,
+          imageBase64: base64Image
+        });
+        if (result.status === 'success') {
+          clearInterval(timerInterval);
+          goToStep(4);
+        } else {
+          alert(result.message || 'Verifikasi gagal.');
+        }
+      } catch (err) {
+        alert('Koneksi gagal. Coba lagi.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHTML;
+      }
+    }
+
+    function openModal() { document.getElementById('historyModal').classList.add('open'); }
+    function closeModal() { document.getElementById('historyModal').classList.remove('open'); }
+    document.getElementById('historyModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('historyModal')) closeModal();
+    });
+
+    function searchHistory() {
+      const q = document.getElementById('search-user-id').value.toLowerCase().trim();
+      const box = document.getElementById('history-results');
+      if (!q) return;
+      
+      const found = allSales.filter(s => s.user?.toLowerCase().includes(q));
+      if (!found.length) {
+        box.innerHTML = `<div class="h-empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>Tidak ditemukan</p></div>`;
+        return;
+      }
+      
+      box.innerHTML = found.map(s => `
+        <div class="history-item">
+          <div>
+            <div class="history-item-name">${s.productName}</div>
+            <div class="history-item-date">${s.buyDate || '—'}</div>
+          </div>
+          <span class="history-status">Sukses</span>
+        </div>
+      `).join('');
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hide');
+        const seq = [['topbar', 100], ['backRow', 200], ['hero', 350], ['progressWrap', 550]];
+        seq.forEach(([id, d]) => setTimeout(() => document.getElementById(id).classList.add('show'), d));
+        
+        const mc = document.getElementById('mainContent');
+        setTimeout(() => {
+          mc.style.opacity = '1';
+          mc.style.transform = 'translateY(0)';
+        }, 700);
+        
+        setTimeout(() => document.getElementById('siteFooter').classList.add('show'), 1000);
+        setTimeout(fetchDatabase, 800);
+      }, 1000);
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode)) || (e.ctrlKey && [85, 83].includes(e.keyCode))) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>

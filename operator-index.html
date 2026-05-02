@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luca's ID</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/10757/10757289.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #ffffff;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: url('1.jpg') center/cover no-repeat fixed, #050505;
+        }
+
+        #global-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('1.jpg') center/cover no-repeat fixed, #050505;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #admin-wrapper { display: none; }
+
+        .sidebar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            height: 100vh;
+            position: fixed;
+            width: 280px;
+            z-index: 50;
+            transition: transform 0.3s ease;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem 3rem;
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            margin: 4px 16px;
+            border-radius: 16px;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-link.active {
+            background: white;
+            color: black;
+            font-weight: 700;
+        }
+
+        .input-dark {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: white;
+            width: 100%;
+            outline: none;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .input-dark:focus {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.06);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: white;
+            color: black;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 14px;
+            transition: 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            margin-bottom: 8px;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; padding: 1.5rem; }
+            .sidebar.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="global-loader">
+        <div class="glass-card flex flex-col items-center justify-center gap-4 animate-pulse">
+            <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            <p class="font-bold tracking-widest text-sm uppercase">Memuat Sistem</p>
+        </div>
+    </div>
+
+    <div id="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="py-10 px-8">
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
+                        <i data-lucide="shield" class="w-6 h-6 text-black"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg leading-none">Luca's ID</h2>
+                        <span class="text-[10px] text-white/40 uppercase tracking-widest">Admin Panel</span>
+                    </div>
+                </div>
+
+                <nav class="space-y-1">
+                    <div class="nav-link active" onclick="switchTab('overview', this)">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>Ringkasan</span>
+                    </div>
+                    <div class="nav-link" onclick="switchTab('sales-data', this)">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                        <span>Daftar Penjualan</span>
+                    </div>
+                    <div class="nav-link" onclick="switchTab('event-mgr', this)">
+                        <i data-lucide="calendar-days" class="w-4 h-4"></i>
+                        <span>Kelola Event</span>
+                    </div>
+                    <div class="nav-link" onclick="switchTab('shop-mgr', this)">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        <span>Kelola Produk</span>
+                    </div>
+                    <div class="nav-link" onclick="switchTab('sales-log', this)">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                        <span>Log Sistem</span>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="absolute bottom-8 left-0 w-full px-6">
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 p-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl transition-all font-semibold text-xs border border-red-500/20">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-10">
+                <div class="flex items-center gap-4">
+                    <button class="lg:hidden p-2 bg-white/5 rounded-lg" onclick="toggleSidebar()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h1 id="page-title" class="text-3xl font-bold tracking-tight">Ringkasan</h1>
+                        <p class="text-white/40 text-xs mt-1">Sistem Manajemen Database Zee App</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="fetchDatabase()" class="glass-card py-2 px-4 rounded-xl flex items-center gap-3 hover:bg-white/5 transition group">
+                        <div class="text-right">
+                            <p id="server-status" class="text-[10px] font-bold text-green-400 tracking-wider">ONLINE</p>
+                        </div>
+                        <div id="status-dot" class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </button>
+                </div>
+            </header>
+
+            <section id="overview" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-card">
+                        <p class="text-white/40 text-xs font-bold uppercase mb-2">Total Produk</p>
+                        <h3 id="stat-products" class="text-3xl font-bold">--</h3>
+                    </div>
+                    <div class="glass-card">
+                        <p class="text-white/40 text-xs font-bold uppercase mb-2">Event Aktif</p>
+                        <h3 id="stat-events" class="text-3xl font-bold">--</h3>
+                    </div>
+                    <div class="glass-card border-green-500/20 bg-green-500/5">
+                        <p class="text-green-400/60 text-xs font-bold uppercase mb-2">Database Link</p>
+                        <h3 class="text-sm font-medium truncate">Supabase Database Sync</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sales-data" class="tab-content">
+                <div class="glass-card">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold">Histori Transaksi</h3>
+                        <button onclick="fetchDatabase()" class="bg-white/10 hover:bg-white/20 p-2 rounded-xl text-xs flex items-center gap-2 transition">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Muat Ulang
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-[10px] uppercase text-white/40 border-b border-white/10 bg-white/5">
+                                <tr>
+                                    <th class="p-3 rounded-tl-xl">ID</th>
+                                    <th class="p-3">User</th>
+                                    <th class="p-3">Nama Produk</th>
+                                    <th class="p-3">Harga</th>
+                                    <th class="p-3">Bukti TF</th>
+                                    <th class="p-3">Tanggal Beli</th>
+                                    <th class="p-3 rounded-tr-xl">Tanggal Exp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="list-sales" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="7" class="p-4 text-center text-white/30 italic text-xs">Memuat data penjualan...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="event-mgr" class="tab-content">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    <div class="glass-card">
+                        <h3 class="text-lg font-bold mb-6">Tambah Event Baru</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Judul Event</label>
+                                <input type="text" id="ev-title" class="input-dark" placeholder="Promo Akhir Tahun">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">URL Banner (Opsional)</label>
+                                <input type="text" id="ev-image" class="input-dark" placeholder="https://link-gambar.com/img.jpg">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Tanggal Event</label>
+                                    <input type="date" id="ev-date" class="input-dark">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Tanggal Expired</label>
+                                    <input type="date" id="ev-exp" class="input-dark">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Deskripsi Event</label>
+                                <textarea id="ev-content" class="input-dark h-28 resize-none" placeholder="Detail promo..."></textarea>
+                            </div>
+                            <button onclick="saveData('event')" class="btn-primary w-full" id="btn-event">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Simpan Event
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h3 class="text-lg font-bold mb-6">Daftar Event</h3>
+                        <div id="list-events" class="space-y-2 max-h-[500px] overflow-y-auto pr-2">
+                            <div class="animate-pulse flex flex-col gap-2">
+                                <div class="h-12 bg-white/5 rounded-xl"></div>
+                                <div class="h-12 bg-white/5 rounded-xl"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="shop-mgr" class="tab-content">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    <div class="glass-card">
+                        <h3 class="text-lg font-bold mb-6">Tambah Produk Link</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Nama Produk</label>
+                                    <input type="text" id="prod-name" class="input-dark" placeholder="Paket Link Lengkap">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Harga (Angka)</label>
+                                    <input type="number" id="prod-price" class="input-dark" placeholder="50000">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-white/30 uppercase mb-2 block">Kategori</label>
+                                <select id="prod-cat" class="input-dark">
+                                    <option value="Premium">Paket Premium</option>
+                                    <option value="Basic">Paket Basic</option>
+                                    <option value="Bundle">Bundle Ekstra</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                                <label class="text-[10px] font-bold text-white/40 uppercase mb-3 flex justify-between items-center">
+                                    Daftar Link Produk
+                                    <button onclick="addLinkField()" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white p-1.5 rounded flex items-center gap-1 transition">
+                                        <i data-lucide="plus" class="w-3 h-3"></i> Tambah
+                                    </button>
+                                </label>
+                                <div id="link-container" class="space-y-3">
+                                    <div class="flex gap-2 link-input-group">
+                                        <input type="text" class="input-dark prod-link" placeholder="https://link-produk-1.com">
+                                        <button disabled class="bg-white/5 text-white/20 p-3 rounded-xl cursor-not-allowed"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onclick="saveData('product')" class="btn-primary w-full" id="btn-prod">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i> Simpan Produk
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="glass-card bg-green-500/5 border-green-500/20">
+                            <h3 class="text-sm font-bold text-green-400 mb-3 flex items-center gap-2">
+                                <i data-lucide="qr-code" class="w-4 h-4"></i> Sistem Pembayaran Aktif
+                            </h3>
+                            <div class="flex items-center gap-4">
+                                <img src="qris.png" alt="QRIS Payment" class="w-20 h-20 rounded-xl bg-white p-1 object-cover" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg'">
+                                <div class="text-sm text-white/60">
+                                    <p class="font-bold text-white">Only QRIS</p>
+                                    <p class="text-xs">File: <code class="bg-black/50 px-1 rounded text-green-300">qris.png</code> otomatis digunakan saat user melakukan checkout.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card">
+                            <h3 class="text-lg font-bold mb-6">Katalog Produk</h3>
+                            <div id="list-products" class="space-y-2 max-h-[300px] overflow-y-auto pr-2">
+                                <div class="animate-pulse flex flex-col gap-2">
+                                    <div class="h-12 bg-white/5 rounded-xl"></div>
+                                    <div class="h-12 bg-white/5 rounded-xl"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sales-log" class="tab-content">
+                <div class="glass-card">
+                    <h3 class="text-lg font-bold mb-6">Aktivitas Database</h3>
+                    <div id="log-container" class="space-y-4 text-sm font-mono">
+                        <div class="text-green-500 opacity-60 flex gap-4">
+                            <span>[SYSTEM]</span>
+                            <span>Menunggu koneksi database...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="fixed bottom-4 right-6 text-white/20 text-[10px] font-mono z-50 pointer-events-none">
+        credit by. @jnizo
+    </footer>
+    <script src="jsonbin-config.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('global-loader');
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.display = 'none'; }, 500);
+            }, 800);
+        });
+
+        (function checkAuth() {
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'operator.html';
+            } else {
+                document.getElementById('admin-wrapper').style.display = 'block';
+            }
+        })();
+
+        lucide.createIcons();
+        document.addEventListener("DOMContentLoaded", fetchDatabase);
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function switchTab(id, el) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.getElementById('page-title').innerText = el.querySelector('span').innerText;
+            if(window.innerWidth < 1024) toggleSidebar();
+        }
+
+        function updateStatus(state) {
+            const statusText = document.getElementById("server-status");
+            const statusDot = document.getElementById("status-dot");
+            
+            if (state === 'loading') {
+                statusText.innerText = "SYNCING...";
+                statusText.className = "text-[10px] font-bold text-yellow-400";
+                statusDot.className = "w-2 h-2 bg-yellow-500 rounded-full animate-spin";
+            } else if (state === 'error') {
+                statusText.innerText = "OFFLINE";
+                statusText.className = "text-[10px] font-bold text-red-500";
+                statusDot.className = "w-2 h-2 bg-red-500 rounded-full shadow-lg";
+            } else {
+                statusText.innerText = "ONLINE";
+                statusText.className = "text-[10px] font-bold text-green-400";
+                statusDot.className = "w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-lg";
+            }
+        }
+
+        function addLog(msg, type = 'SYSTEM') {
+            const container = document.getElementById('log-container');
+            const time = new Date().toLocaleTimeString('id-ID');
+            const log = document.createElement('div');
+            log.className = "flex gap-4 border-b border-white/5 pb-2";
+            log.innerHTML = `<span class="text-white/20">[${time}]</span> <span class="text-white/40">[${type}]</span> <span>${msg}</span>`;
+            container.prepend(log);
+        }
+
+        function addLinkField() {
+            const container = document.getElementById('link-container');
+            const div = document.createElement('div');
+            div.className = "flex gap-2 link-input-group mt-3";
+            div.innerHTML = `
+                <input type="text" class="input-dark prod-link" placeholder="https://link-tambahan.com">
+                <button onclick="this.parentElement.remove()" class="bg-red-500/20 text-red-500 p-3 rounded-xl hover:bg-red-500 hover:text-white transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            `;
+            container.appendChild(div);
+            lucide.createIcons();
+        }
+
+        async function fetchDatabase() {
+            updateStatus('loading');
+            addLog("Mencoba sinkronisasi data...");
+
+            try {
+                const data = await sbFetchAll();
+                
+                renderList('list-events', data.events, 'event');
+                renderList('list-products', data.products, 'product');
+                renderSalesList(data.sales);
+                
+                document.getElementById('stat-products').innerText = data.products?.length || 0;
+                document.getElementById('stat-events').innerText = data.events?.length || 0;
+                
+                updateStatus('online');
+                addLog("Database berhasil diperbarui.", "SUCCESS");
+            } catch (err) {
+                updateStatus('error');
+                addLog("Gagal terhubung ke server.", "ERROR");
+                console.error(err);
+            }
+        }
+
+        function renderList(elementId, items, type) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = "";
+
+            if(!items || items.length === 0) {
+                container.innerHTML = `<p class="text-white/20 text-center py-10 italic text-sm">Tidak ada data ditemukan</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const name = type === 'event' ? item.title : item.name;
+                const sub = type === 'event' ? "Aktif" : `Rp ${parseInt(item.price).toLocaleString('id-ID')}`;
+                
+                const div = document.createElement("div");
+                div.className = "data-item group";
+                div.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="font-bold text-sm">${name}</span>
+                        <span class="text-[10px] text-white/30 font-bold uppercase tracking-tighter">${sub}</span>
+                    </div>
+                    <button onclick="deleteData('${type}', '${item.id}', this)" class="p-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-all opacity-0 group-hover:opacity-100">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function renderSalesList(salesData) {
+            const tbody = document.getElementById('list-sales');
+            tbody.innerHTML = "";
+
+            if(!salesData || salesData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-white/30 italic text-sm">Belum ada histori penjualan terbaru.</td></tr>`;
+                return;
+            }
+
+            salesData.forEach(sale => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition border-b border-white/5 last:border-0";
+                
+                let buktiHtml = `<span class="text-white/30">-</span>`;
+                if(sale.proofUrl && sale.proofUrl.trim() !== "") {
+                    buktiHtml = `<a href="${sale.proofUrl}" target="_blank" class="text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 w-max"><i data-lucide="external-link" class="w-3 h-3"></i> Cek Bukti</a>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="p-3 font-mono text-white/50 text-xs">${sale.id || '#-'}</td>
+                    <td class="p-3 font-bold text-sm text-white">${sale.user || '-'}</td>
+                    <td class="p-3 text-sm text-white/80">${sale.productName || '-'}</td>
+                    <td class="p-3 text-green-400 text-sm font-semibold">Rp ${parseInt(sale.price || 0).toLocaleString('id-ID')}</td>
+                    <td class="p-3">${buktiHtml}</td>
+                    <td class="p-3 text-white/60 text-xs">${sale.buyDate || '-'}</td>
+                    <td class="p-3 text-red-400 text-xs">${sale.expDate || '-'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            lucide.createIcons();
+        }
+
+        async function saveData(type) {
+            const btnId = type === 'event' ? 'btn-event' : 'btn-prod';
+            const btn = document.getElementById(btnId);
+            const originalText = btn.innerHTML;
+            
+            let payload = { type: type };
+            
+            if (type === 'event') {
+                payload.title = document.getElementById('ev-title').value;
+                payload.image = document.getElementById('ev-image').value;
+                payload.dateStart = document.getElementById('ev-date').value;
+                payload.dateExp = document.getElementById('ev-exp').value;
+                payload.content = document.getElementById('ev-content').value;
+                if(!payload.title) return alert("Judul event minimal harus diisi");
+            } else {
+                payload.name = document.getElementById('prod-name').value;
+                payload.price = document.getElementById('prod-price').value;
+                payload.category = document.getElementById('prod-cat').value;
+                
+                const linkInputs = document.querySelectorAll('.prod-link');
+                let linksArray = [];
+                linkInputs.forEach(input => {
+                    if(input.value.trim() !== "") linksArray.push(input.value.trim());
+                });
+                payload.links = linksArray; 
+                
+                if(!payload.name || !payload.price) return alert("Nama dan harga wajib diisi");
+                if(linksArray.length === 0) return alert("Minimal satu link produk harus diisi");
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = "Processing...";
+            addLog(`Mengirim data ${type} baru...`, "POST");
+
+            try {
+                if (type === 'event') {
+                    await sbAddEvent(payload);
+                } else {
+                    await sbAddProduct(payload);
+                }
+                addLog(`Data ${type} berhasil ditambahkan.`, "SUCCESS");
+                
+                if(type === 'event') {
+                    document.getElementById('ev-title').value = "";
+                    document.getElementById('ev-image').value = "";
+                    document.getElementById('ev-date').value = "";
+                    document.getElementById('ev-exp').value = "";
+                    document.getElementById('ev-content').value = "";
+                } else {
+                    document.getElementById('prod-name').value = "";
+                    document.getElementById('prod-price').value = "";
+                    
+                    const linkContainer = document.getElementById('link-container');
+                    linkContainer.innerHTML = `
+                        <div class="flex gap-2 link-input-group">
+                            <input type="text" class="input-dark prod-link" placeholder="https://link-produk-1.com">
+                            <button disabled class="bg-white/5 text-white/20 p-3 rounded-xl cursor-not-allowed"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                }
+
+                fetchDatabase();
+            } catch (err) {
+                alert("Kesalahan koneksi ke Supabase! Pastikan konfigurasi sudah benar.");
+                addLog("Gagal mengirim data.", "CRITICAL");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+            }
+        }
+
+        async function deleteData(type, id, btn) {
+            if(!confirm("Hapus item ini permanen?")) return;
+
+            btn.disabled = true;
+            addLog(`Menghapus ${type} ID: ${id}`, "DELETE");
+
+            try {
+                await sbDelete(type, id);
+                btn.closest('.data-item').style.opacity = "0.3";
+                fetchDatabase();
+            } catch (err) {
+                alert("Gagal menghapus data!");
+                btn.disabled = false;
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'operator.html';
+        }
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 123) e.preventDefault();
+            if (e.ctrlKey && (e.keyCode === 65 || e.keyCode === 67 || e.keyCode === 83 || e.keyCode === 85 || e.keyCode === 86)) e.preventDefault();
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) e.preventDefault();
+        });
+    </script>
+</body>
+</html>

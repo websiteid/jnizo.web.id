@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luca's ID — Official Portal</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#c9a84c;
+  --gold2:#e8c97a;
+  --gold3:#8a6820;
+  --bg:#07070a;
+  --bg2:#0d0d12;
+  --bg3:#111118;
+  --border:rgba(201,168,76,0.15);
+  --border2:rgba(201,168,76,0.3);
+  --text:#f0ece0;
+  --text2:#9b9480;
+  --text3:#5a5444;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:url('1.jpg') no-repeat center center fixed;
+  background-size:cover;
+  background-color:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:default;
+  user-select:none;
+  -webkit-user-select:none;
+}
+#loader{
+  position:fixed;inset:0;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;
+  transition:opacity 1s ease, visibility 1s ease;
+}
+#loader.hide{opacity:0;visibility:hidden;}
+.loader-ring{
+  width:64px;height:64px;
+  border:1px solid var(--border2);
+  border-top-color:var(--gold);
+  border-radius:50%;
+  animation:spin 1.2s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loader-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;letter-spacing:0.5em;
+  color:var(--text3);text-transform:uppercase;
+  margin-top:24px;
+  animation:fadePulse 1.5s ease-in-out infinite;
+}
+@keyframes fadePulse{0%,100%{opacity:0.4}50%{opacity:1}}
+.bg-grid{
+  position:fixed;inset:0;
+  background-image:linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;z-index:0;
+}
+.bg-vignette{
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse at center, rgba(7,7,10,0.4) 20%, rgba(7,7,10,0.95) 100%);
+  pointer-events:none;z-index:0;
+}
+.bg-glow{
+  position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;
+}
+.glow-top{width:600px;height:300px;background:rgba(201,168,76,0.04);top:-100px;left:50%;transform:translateX(-50%);}
+.glow-left{width:300px;height:500px;background:rgba(201,168,76,0.03);bottom:20%;left:-100px;}
+.glow-right{width:300px;height:500px;background:rgba(100,80,200,0.04);top:30%;right:-100px;}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity:0.5;pointer-events:none;z-index:1;
+}
+.wrapper{
+  position:relative;z-index:2;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 20px 60px;
+}
+.topbar{
+  width:100%;max-width:560px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:32px 0 0;
+  opacity:0;transform:translateY(-16px);
+  transition:all 0.8s ease 0.2s;
+}
+.topbar.show{opacity:1;transform:translateY(0);}
+.topbar-brand{
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;letter-spacing:0.4em;color:var(--text3);text-transform:uppercase;
+}
+.topbar-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0.6;animation:fadePulse 2s ease-in-out infinite;}
+.topbar-status{
+  font-size:11px;letter-spacing:0.15em;color:var(--text3);
+  display:flex;align-items:center;gap:6px;
+}
+.status-live{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,0.6);animation:fadePulse 1.5s infinite;}
+.hero{
+  text-align:center;padding:64px 0 48px;
+  width:100%;max-width:560px;
+  opacity:0;transform:translateY(24px);
+  transition:all 1s ease 0.4s;
+}
+.hero.show{opacity:1;transform:translateY(0);}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:10px;letter-spacing:0.55em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:28px;padding:8px 20px;
+  border:1px solid var(--border);border-radius:100px;
+  background:rgba(201,168,76,0.04);
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'—';opacity:0.4;}
+.hero-logo-wrap{position:relative;display:inline-block;margin-bottom:28px;}
+.hero-logo{
+  width:88px;height:88px;border-radius:28px;
+  border:1px solid var(--border2);
+  background:rgba(201,168,76,0.1);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 0 8px rgba(201,168,76,0.04), 0 0 0 16px rgba(201,168,76,0.02);
+}
+.hero-logo img{width:48px;height:48px;object-fit:cover;border-radius:12px;filter:drop-shadow(0 0 12px rgba(201,168,76,0.5));}
+.hero-logo::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.15),transparent 60%);
+}
+.logo-ring{
+  position:absolute;inset:-12px;border-radius:40px;
+  border:1px solid var(--border);animation:logoSpin 12s linear infinite;
+}
+.logo-ring::after{
+  content:'◆';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  font-size:8px;color:var(--gold);
+}
+@keyframes logoSpin{to{transform:rotate(360deg);}}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(48px,10vw,80px);font-weight:300;
+  line-height:1;letter-spacing:-0.01em;
+  color:var(--text);margin-bottom:6px;
+  text-shadow:0 4px 20px rgba(0,0,0,0.5);
+}
+.hero-title em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-title-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(14px,3vw,18px);font-weight:300;
+  letter-spacing:0.35em;color:var(--text3);
+  text-transform:uppercase;margin-bottom:20px;
+}
+.hero-desc{
+  font-size:14px;font-weight:300;color:var(--text2);
+  line-height:1.7;max-width:340px;margin:0 auto;
+}
+.ornamental-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:40px auto;width:100%;max-width:300px;
+}
+.div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+.div-gem{font-size:10px;color:var(--gold);padding:0 4px;}
+.menu-section{
+  width:100%;max-width:560px;
+  opacity:0;transform:translateY(32px);
+  transition:all 1s ease 0.7s;
+}
+.menu-section.show{opacity:1;transform:translateY(0);}
+.menu-label{
+  font-size:10px;letter-spacing:0.5em;color:var(--text3);
+  text-transform:uppercase;text-align:center;margin-bottom:24px;
+}
+.nav-item{
+  display:flex;align-items:center;padding:0;margin-bottom:12px;
+  text-decoration:none;color:var(--text);position:relative;
+  border-radius:20px;overflow:hidden;border:1px solid var(--border);
+  background:rgba(13,13,18,0.6);
+  transition:border-color 0.4s,box-shadow 0.4s,transform 0.3s;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.nav-item:hover{
+  border-color:var(--border2);
+  box-shadow:0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(201,168,76,0.1);
+  transform:translateY(-2px);
+}
+.nav-item:active{transform:scale(0.99);}
+.nav-item-left{
+  width:72px;height:72px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;border-right:1px solid var(--border);
+}
+.nav-item-left::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.06),transparent);
+}
+.nav-item-icon{
+  width:36px;height:36px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.12);
+  position:relative;z-index:1;transition:all 0.3s;
+}
+.nav-item-icon img {
+  width: 20px;height: 20px;object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.2));
+}
+.nav-item:hover .nav-item-icon{
+  background:rgba(201,168,76,0.15);border-color:rgba(201,168,76,0.3);
+}
+.nav-item-body{flex:1;padding:0 20px;}
+.nav-item-name{
+  font-size:15px;font-weight:600;letter-spacing:0.02em;
+  margin-bottom:3px;color:var(--text);
+}
+.nav-item-desc{
+  font-size:12px;font-weight:300;color:var(--text2);letter-spacing:0.01em;
+}
+.nav-item-right{
+  width:52px;height:72px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text3);transition:color 0.3s,transform 0.3s;font-size:16px;
+}
+.nav-item:hover .nav-item-right{color:var(--gold);transform:translateX(3px);}
+.nav-badge{
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;
+  padding:3px 8px;border-radius:100px;background:rgba(201,168,76,0.12);
+  border:1px solid rgba(201,168,76,0.25);color:var(--gold);margin-left:8px;
+}
+.nav-badge.green{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.25);color:#4ade80;}
+.nav-badge.blue{background:rgba(96,165,250,0.1);border-color:rgba(96,165,250,0.25);color:#60a5fa;}
+.site-footer{
+  width:100%;max-width:560px;margin-top:56px;text-align:center;
+  opacity:0;transition:opacity 1s ease 0.9s;
+}
+.site-footer.show{opacity:1;}
+.footer-line{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin-bottom:24px;}
+.footer-logo-text{
+  font-family:'Cormorant Garamond',serif;font-size:20px;
+  font-weight:300;color:var(--text3);letter-spacing:0.15em;margin-bottom:8px;
+}
+.footer-meta{font-size:10px;letter-spacing:0.4em;color:var(--text3);opacity:0.5;}
+.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 24px;margin:16px 0;}
+.footer-links a{font-size:11px;letter-spacing:0.2em;color:var(--text3);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--gold);}
+.info-float{
+  position:fixed;bottom:28px;right:28px;z-index:50;
+  width:48px;height:48px;border-radius:50%;background:rgba(13,13,18,0.6);
+  border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);transition:all 0.3s;
+  animation:breatheBtn 4s ease-in-out infinite;
+}
+.info-float:hover{
+  border-color:var(--gold);box-shadow:0 8px 32px rgba(201,168,76,0.3);
+  animation:none;transform:scale(1.08);
+}
+.info-float img{width:22px;height:22px;object-fit:cover;border-radius:6px;filter:drop-shadow(0 0 6px rgba(201,168,76,0.4));}
+@keyframes breatheBtn{0%,100%{box-shadow:0 8px 32px rgba(0,0,0,0.6)}50%{box-shadow:0 8px 32px rgba(201,168,76,0.25)}}
+.modal-overlay{
+  position:fixed;inset:0;z-index:100;background:rgba(7,7,10,0.85);
+  backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity 0.4s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{
+  width:100%;max-width:400px;background:rgba(13,13,18,0.8);
+  backdrop-filter:blur(25px);border:1px solid var(--border2);
+  border-radius:28px;padding:40px 36px;text-align:center;
+  position:relative;overflow:hidden;transform:translateY(24px) scale(0.97);
+  transition:all 0.4s cubic-bezier(0.22,1,0.36,1);box-shadow:0 40px 80px rgba(0,0,0,0.8);
+}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1);}
+.modal-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.modal-close{
+  position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:10px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  color:var(--text3);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all 0.2s;
+}
+.modal-close:hover{background:rgba(255,255,255,0.1);color:var(--text);}
+.modal-icon{
+  width:64px;height:64px;border-radius:20px;background:rgba(201,168,76,0.07);
+  border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+}
+.modal-icon img{width:34px;height:34px;object-fit:cover;border-radius:8px;filter:drop-shadow(0 0 10px rgba(201,168,76,0.5));}
+.modal-title{
+  font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;
+  color:var(--text);margin-bottom:12px;letter-spacing:0.02em;
+}
+.modal-title em{font-style:italic;color:var(--gold2);}
+.modal-body{
+  font-size:14px;font-weight:300;color:var(--text2);line-height:1.75;margin-bottom:24px;
+}
+.modal-footer-text{font-size:10px;letter-spacing:0.4em;color:var(--text3);text-transform:uppercase;}
+.nav-item{
+  opacity:0;transform:translateX(-16px);
+  transition:opacity 0.6s ease, transform 0.6s ease, border-color 0.4s, box-shadow 0.4s, translateY 0.3s;
+}
+.nav-item.show{opacity:1;transform:translateX(0);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-ring"></div>
+  <div class="loader-text">Memuat Portal</div>
+</div>
+
+<div class="bg-grid"></div>
+<div class="bg-vignette"></div>
+<div class="bg-glow glow-top"></div>
+<div class="bg-glow glow-left"></div>
+<div class="bg-glow glow-right"></div>
+
+<div class="wrapper">
+  <div class="topbar" id="topbar">
+    <div class="topbar-brand">Luca's ID</div>
+    <div class="topbar-dot"></div>
+    <div class="topbar-status">
+      <span class="status-live"></span>
+      Portal Aktif
+    </div>
+  </div>
+
+  <div class="hero" id="hero">
+    <div class="hero-eyebrow">Portal Resmi</div>
+    <div class="hero-logo-wrap">
+      <div class="hero-logo">
+        <img src="logo.jpg" alt="Luca's ID">
+      </div>
+      <div class="logo-ring"></div>
+    </div>
+    <div class="hero-title">Luca's <em>ID</em></div>
+    <div class="hero-title-sub">Official Portal</div>
+    <div class="hero-desc">Platform eksklusif untuk akses layanan, event, dan komunitas terpadu.</div>
+  </div>
+
+  <div class="ornamental-divider">
+    <div class="div-line"></div>
+    <div class="div-gem">◆</div>
+    <div class="div-line"></div>
+  </div>
+
+  <div class="menu-section" id="menuSection">
+    <div class="menu-label">Navigasi Layanan</div>
+
+    <a href="event.html" class="nav-item" id="ni1">
+      <div class="nav-item-left">
+        <div class="nav-item-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/2413/2413035.png" alt="Event">
+        </div>
+      </div>
+      <div class="nav-item-body">
+        <div class="nav-item-name">Exclusive Event <span class="nav-badge green">Live</span></div>
+        <div class="nav-item-desc">Event eksklusif & program terbaru</div>
+      </div>
+      <div class="nav-item-right">→</div>
+    </a>
+
+    <a href="buy.html" class="nav-item" id="ni2">
+      <div class="nav-item-left">
+        <div class="nav-item-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/3737/3737372.png" alt="Buy">
+        </div>
+      </div>
+      <div class="nav-item-body">
+        <div class="nav-item-name">Marketplace / Shop <span class="nav-badge">Baru</span></div>
+        <div class="nav-item-desc">Beli produk digital premium</div>
+      </div>
+      <div class="nav-item-right">→</div>
+    </a>
+
+    <a href="help.html" class="nav-item" id="ni3">
+      <div class="nav-item-left">
+        <div class="nav-item-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/1660/1660114.png" alt="Help">
+        </div>
+      </div>
+      <div class="nav-item-body">
+        <div class="nav-item-name">Pusat Bantuan</div>
+        <div class="nav-item-desc">Dukungan & pertanyaan umum</div>
+      </div>
+      <div class="nav-item-right">→</div>
+    </a>
+
+    <a href="link.html" class="nav-item" id="ni4">
+      <div class="nav-item-left">
+        <div class="nav-item-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/455/455691.png" alt="Link">
+        </div>
+      </div>
+      <div class="nav-item-body">
+        <div class="nav-item-name">Tautan Grup <span class="nav-badge blue">komunitas</span></div>
+        <div class="nav-item-desc">Bergabung dengan komunitas kami</div>
+      </div>
+      <div class="nav-item-right">→</div>
+    </a>
+
+    <a href="operator.html" class="nav-item" id="ni5">
+      <div class="nav-item-left">
+        <div class="nav-item-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/12724/12724606.png" alt="Operator">
+        </div>
+      </div>
+      <div class="nav-item-body">
+        <div class="nav-item-name">Operator</div>
+        <div class="nav-item-desc">Panel pengelola & admin resmi</div>
+      </div>
+      <div class="nav-item-right">→</div>
+    </a>
+
+  </div>
+
+  <footer class="site-footer" id="siteFooter">
+    <div class="footer-line"></div>
+    <div class="footer-logo-text">Luca's ID</div>
+    <div class="footer-links">
+      <a href="#">Tentang</a>
+      <a href="#">Syarat & Ketentuan</a>
+      <a href="#">Privasi</a>
+      <a href="#">Kontak</a>
+    </div>
+    <div class="footer-meta">by @nopek &bull; 2026 &bull; All Rights Reserved</div>
+  </footer>
+</div>
+
+<button class="info-float" id="infoBtn" title="Tentang">
+  <img src="logo.jpg" alt="info">
+</button>
+
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeModal">✕</button>
+    <div class="modal-icon">
+      <img src="logo.jpg" alt="logo">
+    </div>
+    <div class="modal-title">Tentang <em>Luca's ID</em></div>
+    <p class="modal-body">
+      Luca's ID adalah portal informasi terpadu yang dirancang untuk memberikan kemudahan akses menuju berbagai layanan eksklusif. Di sini Anda dapat menemukan info event, marketplace, pusat bantuan, hingga tautan komunitas dengan cepat dan aman.
+    </p>
+    <div class="ornamental-divider" style="margin:20px auto 20px;max-width:200px;">
+      <div class="div-line"></div>
+      <div class="div-gem">◆</div>
+      <div class="div-line"></div>
+    </div>
+    <div class="modal-footer-text">Dikelola oleh @nopek &bull; 2026</div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+    setTimeout(() => document.getElementById('topbar').classList.add('show'), 100);
+    setTimeout(() => document.getElementById('hero').classList.add('show'), 300);
+    setTimeout(() => document.getElementById('menuSection').classList.add('show'), 600);
+    ['ni1','ni2','ni3','ni4','ni5'].forEach((id, i) => {
+      setTimeout(() => document.getElementById(id).classList.add('show'), 700 + i * 100);
+    });
+    setTimeout(() => document.getElementById('siteFooter').classList.add('show'), 1200);
+  }, 1200);
+});
+
+const infoBtn = document.getElementById('infoBtn');
+const modal = document.getElementById('aboutModal');
+const closeModal = document.getElementById('closeModal');
+
+infoBtn.addEventListener('click', () => modal.classList.add('open'));
+closeModal.addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && [73,74,67].includes(e.keyCode)) || (e.ctrlKey && [85,83].includes(e.keyCode))) e.preventDefault();
+});
+</script>
+</body>
+</html>
