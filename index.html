@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>LUCA'S ID</title>
+  <link rel="icon" type="image/jpeg" href="profil.jpg">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.1.0/uicons-solid-rounded/css/uicons-solid-rounded.css" />
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.1.0/uicons-brands/css/uicons-brands.css" />
+
+  <style>
+    :root {
+      --bg-deep: #09090b;
+      --bg-mid: #121214;
+      --accent-lime: #ccff00;
+      --accent-cyan: #00f0ff;
+      --accent-magenta: #ff0055;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.4);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-bg-hover: rgba(255, 255, 255, 0.06);
+      --glass-blur: blur(16px);
+      --brutal-border: 2px solid rgba(255, 255, 255, 0.8);
+      --brutal-border-hover: 2px solid var(--accent-lime);
+      --brutal-shadow: 6px 6px 0px rgba(255, 255, 255, 0.1);
+      --brutal-shadow-hover: 8px 8px 0px var(--accent-lime);
+      --brutal-shadow-btn: 4px 4px 0px rgba(255, 255, 255, 0.2);
+      --grid-line: rgba(255, 255, 255, 0.04);
+      --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --r-sm: 12px;
+      --r-md: 16px;
+      --r-lg: 24px;
+      --r-xl: 32px;
+      --r-pill: 100px;
+    }
+
+    [data-theme="light"] {
+      --bg-deep: #f4f4f0;
+      --bg-mid: #ffffff;
+      --accent-lime: #ff3366;
+      --accent-cyan: #3333ff;
+      --accent-magenta: #ffcc00;
+      --text-primary: #000000;
+      --text-secondary: rgba(0, 0, 0, 0.7);
+      --text-muted: rgba(0, 0, 0, 0.5);
+      --glass-bg: rgba(255, 255, 255, 0.6);
+      --glass-bg-hover: rgba(255, 255, 255, 0.9);
+      --brutal-border: 2.5px solid #000000;
+      --brutal-border-hover: 2.5px solid #000000;
+      --brutal-shadow: 6px 6px 0px #000000;
+      --brutal-shadow-hover: 8px 8px 0px var(--accent-lime);
+      --brutal-shadow-btn: 4px 4px 0px #000;
+      --grid-line: rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="light"] .bg-orbs::before {
+      background: radial-gradient(ellipse 80% 60% at 10% 0%, rgba(51, 51, 255, 0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 80% at 90% 100%, rgba(255, 51, 102, 0.07) 0%, transparent 55%),
+                  radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255, 204, 0, 0.04) 0%, transparent 70%);
+    }
+
+    [data-theme="light"] .orb-1 { background: linear-gradient(135deg, rgba(51, 51, 255, 0.15), rgba(51, 51, 255, 0.04)); }
+    [data-theme="light"] .orb-2 { background: linear-gradient(225deg, rgba(255, 51, 102, 0.12), rgba(200, 0, 80, 0.03)); }
+    [data-theme="light"] .orb-3 { background: linear-gradient(45deg, rgba(255, 204, 0, 0.12), rgba(200, 160, 0, 0.03)); }
+    [data-theme="light"] .orb-4 { background: linear-gradient(180deg, rgba(51, 51, 255, 0.08), rgba(255, 204, 0, 0.05)); }
+    [data-theme="light"] .bg-grid { background-image: radial-gradient(circle, rgba(0, 0, 0, 0.12) 1px, transparent 1px); }
+    [data-theme="light"] .bg-noise { opacity: 0.02; }
+    [data-theme="light"] .bg-scanlines { opacity: 0.015; }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.4s ease, color 0.4s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    img {
+      -webkit-user-drag: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: var(--font);
+      outline: none;
+    }
+
+    section {
+      scroll-margin-top: 100px;
+    }
+
+    i.fi {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-orbs::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 10% 0%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 80% at 90% 100%, rgba(255, 0, 85, 0.10) 0%, transparent 55%),
+                  radial-gradient(ellipse 50% 50% at 50% 50%, rgba(204, 255, 0, 0.05) 0%, transparent 70%),
+                  radial-gradient(ellipse 100% 100% at 50% -20%, rgba(0, 240, 255, 0.07) 0%, transparent 60%);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 700px;
+      height: 350px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(0, 200, 255, 0.08));
+      top: -80px;
+      left: -150px;
+      border-radius: 40% 60% 60% 40% / 50% 30% 70% 50%;
+      animation: aurora1 14s infinite alternate ease-in-out;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 400px;
+      background: linear-gradient(225deg, rgba(255, 0, 85, 0.22), rgba(200, 0, 120, 0.06));
+      bottom: -60px;
+      right: -100px;
+      border-radius: 60% 40% 30% 70% / 40% 60% 40% 60%;
+      animation: aurora2 18s infinite alternate ease-in-out;
+    }
+
+    .orb-3 {
+      width: 400px;
+      height: 300px;
+      background: linear-gradient(45deg, rgba(204, 255, 0, 0.15), rgba(100, 255, 0, 0.04));
+      top: 35%;
+      left: 20%;
+      border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+      animation: aurora3 22s infinite alternate ease-in-out;
+    }
+
+    .orb-4 {
+      width: 300px;
+      height: 500px;
+      background: linear-gradient(180deg, rgba(0, 240, 255, 0.10), rgba(204, 255, 0, 0.06));
+      top: 15%;
+      right: 5%;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      animation: aurora4 16s infinite alternate ease-in-out;
+    }
+
+    @keyframes aurora1 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.7; }
+      50% { transform: translate(60px, 40px) rotate(15deg) scale(1.1); opacity: 1; }
+      100% { transform: translate(-30px, 80px) rotate(-5deg) scale(0.95); opacity: 0.6; }
+    }
+    @keyframes aurora2 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.7; }
+      50% { transform: translate(-80px, -40px) rotate(-20deg) scale(1.15); opacity: 1; }
+      100% { transform: translate(40px, -70px) rotate(10deg) scale(0.9); opacity: 0.5; }
+    }
+    @keyframes aurora3 {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.5; }
+      50% { transform: translate(50px, -60px) scale(1.2) rotate(25deg); opacity: 0.9; }
+      100% { transform: translate(-40px, 50px) scale(0.85) rotate(-15deg); opacity: 0.4; }
+    }
+    @keyframes aurora4 {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 0.4; }
+      100% { transform: translate(-50px, 80px) rotate(20deg); opacity: 0.7; }
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 85%);
+    }
+
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+
+    .bg-scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.5) 2px, rgba(255, 255, 255, 0.5) 3px);
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--brutal-border);
+      border-radius: var(--r-md);
+      box-shadow: var(--brutal-shadow);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .glass-hover {
+      cursor: pointer;
+    }
+
+    .glass-hover:hover {
+      background: var(--glass-bg-hover);
+      transform: translate(-4px, -4px);
+      box-shadow: var(--brutal-shadow-hover);
+      border: var(--brutal-border-hover);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-gap {
+      padding-bottom: 120px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-deep);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--text-primary);
+      border-radius: 10px;
+      border: 1px solid var(--bg-deep);
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--text-primary);
+    }
+
+    .text-stroke {
+      color: transparent;
+      -webkit-text-stroke: 2px var(--text-primary);
+    }
+
+    [data-theme="light"] .text-stroke {
+      -webkit-text-stroke: 2.5px #000000;
+    }
+
+    .text-cyan {
+      color: var(--accent-cyan);
+    }
+
+    .text-lime {
+      color: var(--accent-lime);
+    }
+
+    nav {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 48px);
+      max-width: 1000px;
+      z-index: 900;
+      padding: 10px 24px;
+      border-radius: var(--r-pill);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav.scrolled {
+      top: 16px;
+      background: var(--bg-deep);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.3s;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .nav-logo:hover {
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      padding: 8px 16px;
+      border-radius: var(--r-pill);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--text-primary);
+      color: var(--bg-deep);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: var(--brutal-border);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+      box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.2);
+    }
+
+    [data-theme="light"] .btn-icon {
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--accent-lime);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0px var(--accent-lime);
+    }
+
+    .btn-outline {
+      padding: 10px 20px;
+      border-radius: var(--r-pill);
+      border: var(--brutal-border);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-cyan);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--accent-cyan);
+    }
+
+    .btn-primary {
+      padding: 10px 24px;
+      border-radius: var(--r-pill);
+      border: 2px solid #000;
+      background: var(--accent-lime);
+      color: #000;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+      box-shadow: 4px 4px 0px var(--text-primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-cyan);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--text-primary);
+    }
+
+    #home {
+      padding: 200px 0 120px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: var(--r-pill);
+      background: var(--bg-deep);
+      border: var(--brutal-border);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-lime);
+      animation: blink 1.5s infinite;
+      border: 1px solid #000;
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 8vw, 92px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn-main {
+      padding: 16px 36px;
+      border-radius: var(--r-pill);
+      font-size: 15px;
+      font-weight: 800;
+      background: var(--accent-lime);
+      color: #000;
+      border: 2px solid #000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.3s;
+      box-shadow: 6px 6px 0px var(--text-primary);
+    }
+
+    .hero-btn-main:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 10px 10px 0px var(--text-primary);
+      background: var(--accent-cyan);
+    }
+
+    .hero-btn-ghost {
+      padding: 16px 36px;
+      border-radius: var(--r-pill);
+      font-size: 15px;
+      font-weight: 800;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      border: var(--brutal-border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.3s;
+      box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.2);
+    }
+
+    [data-theme="light"] .hero-btn-ghost {
+      box-shadow: 6px 6px 0px #000;
+    }
+
+    .hero-btn-ghost:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 10px 10px 0px var(--accent-magenta);
+      border-color: var(--accent-magenta);
+    }
+
+    .section-head {
+      margin-bottom: 48px;
+    }
+
+    .section-head.center {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--r-pill);
+      background: var(--bg-deep);
+      border: var(--brutal-border);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .section-tag i {
+      color: var(--accent-lime);
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .section-sub {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 120px;
+    }
+
+    .stat-card {
+      padding: 40px 24px;
+      border-radius: var(--r-xl);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-num {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--accent-lime);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .stat-status-wrap {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .fetch-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--r-pill);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: var(--brutal-border);
+      background: var(--bg-deep);
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .fetch-status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-lime);
+      border: 1px solid #000;
+    }
+
+    .fetch-status.loading .dot {
+      animation: blink 1s infinite;
+      background: var(--accent-cyan);
+    }
+
+    .fetch-status.error .dot {
+      background: var(--accent-magenta);
+    }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .item-card {
+      border-radius: var(--r-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-width: 2px;
+    }
+
+    .item-img-wrap {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      border-bottom: var(--brutal-border);
+    }
+
+    .item-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .item-card:hover .item-img-wrap img {
+      transform: scale(1.08);
+    }
+
+    .item-ph {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      background: var(--text-primary);
+      color: var(--bg-deep);
+    }
+
+    .event-ph {
+      height: 140px;
+    }
+
+    .shop-ph {
+      aspect-ratio: 4/3;
+    }
+
+    .item-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 8px;
+      background: var(--bg-deep);
+    }
+
+    .item-btn {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px;
+      border-radius: var(--r-pill);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.3s;
+      text-transform: uppercase;
+      border: 2px solid #000;
+      box-shadow: 3px 3px 0px var(--text-primary);
+    }
+
+    .event-img {
+      height: 140px;
+    }
+
+    .event-hot-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+      background: var(--accent-magenta);
+      color: #fff;
+      border: 2px solid #000;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .event-date {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .event-title {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--text-primary);
+    }
+
+    .event-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .event-btn {
+      background: var(--bg-deep);
+      border: var(--brutal-border);
+      color: var(--text-primary);
+      box-shadow: 3px 3px 0px rgba(255, 255, 255, 0.2);
+    }
+
+    [data-theme="light"] .event-btn {
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .event-btn:hover {
+      background: var(--text-primary);
+      color: var(--bg-deep);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px var(--accent-magenta);
+      border-color: var(--text-primary);
+    }
+
+    .shop-img {
+      aspect-ratio: 4/3;
+    }
+
+    .shop-title {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .shop-price {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-lime);
+    }
+
+    .shop-btn {
+      background: var(--accent-cyan);
+      color: #000;
+      border: 2px solid #000;
+      box-shadow: 3px 3px 0px var(--text-primary);
+    }
+
+    .shop-btn:hover {
+      background: var(--accent-lime);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--text-primary);
+    }
+
+    .skeleton-box {
+      width: 100%;
+      height: 220px;
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg-deep);
+    }
+
+    .spinner {
+      font-size: 32px;
+      animation: bounce 1s infinite;
+      color: var(--accent-cyan);
+    }
+
+    .data-placeholder {
+      text-align: center;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 800;
+      z-index: 1;
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 40px;
+      border-radius: var(--r-md);
+      background: var(--bg-deep);
+      border-width: 3px;
+      border-color: var(--accent-magenta);
+    }
+
+    .error-state i {
+      font-size: 32px;
+      color: var(--accent-magenta);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .error-state p {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .retry-btn {
+      padding: 10px 24px;
+      border-radius: var(--r-pill);
+      border: 2px solid #000;
+      background: var(--accent-magenta);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 4px 4px 0px var(--text-primary);
+    }
+
+    .retry-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--text-primary);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      padding: 32px;
+      border-radius: var(--r-lg);
+      text-align: left;
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      border: var(--brutal-border);
+      background: var(--text-primary);
+      color: var(--bg-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      transition: 0.3s;
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: translate(-4px, -4px) rotate(-10deg);
+      background: var(--accent-lime);
+      box-shadow: 8px 8px 0px var(--text-primary);
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 120px;
+    }
+
+    .info-card {
+      padding: 32px;
+      border-radius: var(--r-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 2px solid #000;
+      background: var(--accent-cyan);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: 0.3s;
+      margin-bottom: 8px;
+      box-shadow: 4px 4px 0px var(--text-primary);
+    }
+
+    .info-card:hover .info-icon {
+      transform: translate(-4px, -4px);
+      box-shadow: 8px 8px 0px var(--text-primary);
+      background: var(--accent-magenta);
+      color: #fff;
+    }
+
+    .info-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .info-card p {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .contact-wrap {
+      padding: 64px 40px;
+      border-radius: var(--r-xl);
+      text-align: center;
+      margin-bottom: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+      width: 100%;
+    }
+
+    .btn-contact {
+      padding: 24px;
+      border-radius: var(--r-md);
+      text-align: center;
+      border-width: 3px;
+      background: var(--bg-deep);
+    }
+
+    .btn-contact .c-icon {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 16px;
+      transition: 0.3s;
+      color: var(--accent-lime);
+    }
+
+    .btn-contact:hover .c-icon {
+      transform: scale(1.2) translateY(-4px);
+      color: var(--accent-cyan);
+    }
+
+    .btn-contact .c-label {
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .btn-contact .c-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 64px 0 32px;
+      border-top: var(--brutal-border);
+      background: var(--bg-deep);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      max-width: 320px;
+      margin: 16px 0 24px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: var(--brutal-border);
+      background: var(--bg-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--text-primary);
+      transition: 0.3s;
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .social-btn:hover {
+      background: var(--text-primary);
+      color: var(--bg-deep);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--accent-lime);
+      border-color: var(--text-primary);
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col a {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .footer-col a:hover {
+      color: var(--accent-cyan);
+      padding-left: 8px;
+    }
+
+    .footer-bottom {
+      border-top: var(--brutal-border);
+      padding-top: 24px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .modal-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-ov.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 600px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 48px;
+      border-radius: var(--r-lg);
+      background: var(--bg-deep);
+      border: var(--brutal-border);
+      box-shadow: 12px 12px 0px var(--accent-cyan);
+      transform: translateY(30px);
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .modal-ov.active .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: var(--brutal-border);
+      background: var(--bg-deep);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      font-size: 20px;
+      transition: 0.3s;
+      box-shadow: var(--brutal-shadow-btn);
+    }
+
+    .modal-close:hover {
+      background: var(--accent-magenta);
+      color: #fff;
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--text-primary);
+      border-color: #000;
+    }
+
+    .modal-box h2 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-transform: uppercase;
+    }
+
+    .privacy-section {
+      margin-bottom: 24px;
+    }
+
+    .privacy-section h4 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .privacy-section p {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .chat-window {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      bottom: 100px;
+      right: 32px;
+      width: 360px;
+      height: 500px;
+      max-width: calc(100vw - 48px);
+      z-index: 950;
+      border-radius: var(--r-md);
+      overflow: hidden;
+      background: var(--bg-deep);
+      border: var(--brutal-border);
+      box-shadow: 10px 10px 0px var(--text-primary);
+    }
+
+    .chat-window.active {
+      display: flex;
+      animation: chatPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .chat-header {
+      background: var(--text-primary);
+      padding: 16px 20px;
+      border-bottom: var(--brutal-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--bg-deep);
+    }
+
+    .chat-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-deep);
+      overflow: hidden;
+    }
+
+    .chat-header h4 {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+
+    .chat-online {
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chat-online-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-magenta);
+      border: 1px solid #000;
+      animation: blink 1.5s infinite;
+    }
+
+    .chat-min-btn {
+      background: none;
+      border: none;
+      color: var(--bg-deep);
+      font-size: 24px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message-bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+      border: 2px solid var(--text-primary);
+      animation: fadeSlide 0.3s ease forwards;
+    }
+
+    .msg-bot {
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      border-bottom-left-radius: 0;
+      align-self: flex-start;
+    }
+
+    .msg-user {
+      background: var(--accent-lime);
+      color: #000;
+      border-bottom-right-radius: 0;
+      align-self: flex-end;
+      border-color: #000;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 20px 16px;
+    }
+
+    .qr-btn {
+      padding: 6px 14px;
+      border-radius: var(--r-pill);
+      border: 2px solid var(--text-primary);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .qr-btn:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      border-color: #000;
+    }
+
+    .chat-input-row {
+      padding: 16px;
+      background: var(--bg-deep);
+      border-top: var(--brutal-border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: transparent;
+      border: var(--brutal-border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .chat-send {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 2px solid #000;
+      background: var(--accent-lime);
+      color: #000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 2px 2px 0px var(--text-primary);
+    }
+
+    .chat-send:hover {
+      background: var(--accent-cyan);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0px var(--text-primary);
+    }
+
+    .chat-fab {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 960;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      border: var(--brutal-border);
+      background: var(--accent-cyan);
+      color: #000;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 6px 6px 0px var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+    }
+
+    [data-theme="light"] .chat-fab {
+      box-shadow: 6px 6px 0px #000;
+    }
+
+    .chat-fab:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 10px 10px 0px var(--text-primary);
+      background: var(--accent-lime);
+      border-color: #000;
+    }
+
+    .chat-fab-notif {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-magenta);
+      border: 2px solid #000;
+      font-size: 11px;
+      font-weight: 900;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #notif-bar {
+      position: fixed;
+      bottom: 32px;
+      left: -400px;
+      z-index: 2000;
+      width: 340px;
+      padding: 20px;
+      border-radius: var(--r-md);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--bg-deep);
+      border: var(--brutal-border);
+      box-shadow: 8px 8px 0px var(--accent-lime);
+      transition: left 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    #notif-bar.active {
+      left: 32px;
+    }
+
+    .notif-icon-wrap {
+      width: 40px;
+      height: 40px;
+      background: var(--text-primary);
+      color: var(--bg-deep);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .notif-content h4 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .notif-content p {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes chatPop {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav .nav-links,
+      nav .btn-primary {
+        display: none;
+      }
+      .hero-title {
+        font-size: 50px;
+        letter-spacing: -1px;
+      }
+      #notif-bar {
+        width: calc(100% - 48px);
+        left: -100%;
+        bottom: 24px;
+      }
+      #notif-bar.active {
+        left: 24px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .chat-window {
+        bottom: 100px;
+        right: 24px;
+      }
+      .chat-fab {
+        bottom: 24px;
+        right: 24px;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .section-gap {
+        padding-bottom: 80px;
+      }
+      .data-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .item-body {
+        padding: 10px;
+        gap: 6px;
+      }
+      .event-img {
+        height: 100px;
+      }
+      .event-ph {
+        height: 100px;
+      }
+      .event-title {
+        font-size: 12px;
+      }
+      .event-desc {
+        font-size: 10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .item-btn {
+        padding: 7px;
+        font-size: 10px;
+        border-radius: 8px;
+        box-shadow: 2px 2px 0px var(--text-primary);
+        border-width: 1.5px;
+      }
+      .item-card:hover .item-btn {
+        box-shadow: 4px 4px 0px var(--text-primary);
+      }
+      .event-hot-badge {
+        font-size: 7px;
+        padding: 3px 7px;
+        top: 6px;
+        right: 6px;
+      }
+      .shop-title {
+        font-size: 12px;
+      }
+      .shop-price {
+        font-size: 14px;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .contact-wrap {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;" ondrop="return false;">
+
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+  <div class="bg-scanlines"></div>
+
+  <nav class="glass" id="navbar">
+    <a href="#home" class="nav-logo">
+      <img src="profil.jpg" alt="LUCA'S ID Logo" class="brand-logo" onerror="this.src='https://ui-avatars.com/api/?name=L+U&background=09090b&color=ccff00&bold=true'" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#home" class="active" data-i18n="nav_home">Beranda</a></li>
+      <li><a href="#shop" data-i18n="nav_shop">Toko</a></li>
+      <li><a href="#events" data-i18n="nav_events">Event</a></li>
+      <li><a href="video.html" data-i18n="nav_video">Video</a></li>
+      <li><a href="#services" data-i18n="nav_features">Fitur</a></li>
+      <li><a href="#info" data-i18n="nav_info">Informasi</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-icon" onclick="toggleLang()" title="Toggle Language" id="lang-btn"><i class="fi fi-sr-globe"></i></button>
+      <button class="btn-icon" onclick="toggleTheme()" title="Ubah Tema"><i id="theme-icon" class="fi fi-sr-sun"></i></button>
+      <button class="btn-outline" onclick="toggleChat()"><i class="fi fi-sr-comment-alt"></i> <span data-i18n="nav_chat">Chat</span></button>
+      <a href="https://t.me/Off_luca" target="_blank" class="btn-primary"><i class="fi fi-sr-paper-plane"></i> <span data-i18n="nav_join">Gabung</span></a>
+    </div>
+  </nav>
+
+  <section id="home">
+    <div class="container" data-aos="fade-up">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span data-i18n="hero_badge">Official Platform &amp; Premium Community</span>
+      </div>
+      <h1 class="hero-title">
+        LUCA'S ID<br />
+        <span class="text-stroke">Digital Platform</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">
+        Platform all-in-one untuk kebutuhan digital Anda — dari produk premium, event komunitas, hingga perlindungan privasi tingkat tinggi.
+      </p>
+      <div class="hero-buttons">
+        <a href="#shop" class="hero-btn-main"><i class="fi fi-sr-shopping-cart"></i> <span data-i18n="hero_btn_shop">Lihat Toko</span></a>
+        <a href="#events" class="hero-btn-ghost"><i class="fi fi-sr-sparkles"></i> <span data-i18n="hero_btn_event">Cek Event</span></a>
+        <a href="video.html" class="hero-btn-ghost"><i class="fi fi-sr-play"></i> <span data-i18n="hero_btn_video">Lihat Video</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="stat-status-wrap" id="stats-status">
+      <span class="fetch-status loading"><span class="dot"></span>Memuat statistik...</span>
+    </div>
+    <div class="stats-grid" id="stats-grid"></div>
+  </section>
+
+  <section id="shop" class="container section-gap">
+    <div class="section-head" data-aos="fade-right">
+      <div class="section-tag"><i class="fi fi-sr-shopping-bag"></i> <span data-i18n="shop_tag">Marketplace</span></div>
+      <h2 class="section-title"><span data-i18n="shop_title">Produk</span> <span class="text-cyan" data-i18n="shop_title2">Pilihan</span></h2>
+      <p class="section-sub" data-i18n="shop_sub">Produk digital kurasi dengan harga terbaik untuk komunitas.</p>
+    </div>
+    <div id="shop-container">
+      <div class="skeleton-box glass">
+        <div class="data-placeholder">
+          <div class="spinner"><i class="fi fi-sr-spinner-alt"></i></div>
+          <p data-i18n="shop_loading">Menghubungkan ke katalog shop...</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 32px;" data-aos="fade-up">
+      <a href="shop.html" style="color: var(--text-primary); font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; text-decoration: underline; text-decoration-color: var(--accent-lime); text-decoration-thickness: 3px; text-underline-offset: 4px;" data-i18n="shop_all">Lihat Semua Produk →</a>
+    </div>
+  </section>
+
+  <section id="events" class="container section-gap">
+    <div class="section-head" data-aos="fade-right">
+      <div class="section-tag"><i class="fi fi-sr-calendar"></i> <span data-i18n="event_tag">Schedule</span></div>
+      <h2 class="section-title"><span data-i18n="event_title">Event</span> <span class="text-lime" data-i18n="event_title2">Mendatang</span></h2>
+      <p class="section-sub" data-i18n="event_sub">Ikuti event eksklusif komunitas dan raih hadiah menarik.</p>
+    </div>
+    <div id="events-container">
+      <div class="skeleton-box glass">
+        <div class="data-placeholder">
+          <div class="spinner"><i class="fi fi-sr-spinner-alt"></i></div>
+          <p data-i18n="event_loading">Memuat data event dari server...</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 32px;" data-aos="fade-up">
+      <a href="event.html" style="color: var(--text-primary); font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; text-decoration: underline; text-decoration-color: var(--accent-cyan); text-decoration-thickness: 3px; text-underline-offset: 4px;" data-i18n="event_all">Lihat Semua Event →</a>
+    </div>
+  </section>
+
+  <section id="services" class="container section-gap">
+    <div class="section-head center" data-aos="fade-up">
+      <div class="section-tag"><i class="fi fi-sr-star"></i> Keunggulan</div>
+      <h2 class="section-title">Kenapa Memilih <span class="text-cyan">Kami?</span></h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card glass glass-hover" data-aos="fade-up" data-aos-delay="0">
+        <div class="feature-icon"><i class="fi fi-sr-lock"></i></div>
+        <h3>Keamanan Ekstra</h3>
+        <p>Setiap file yang kami bagikan melewati proses scan ketat. Data Anda terlindungi dengan standar keamanan tertinggi.</p>
+      </div>
+      <div class="feature-card glass glass-hover" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-icon"><i class="fi fi-sr-users"></i></div>
+        <h3>Komunitas Aktif</h3>
+        <p>Bergabung dengan ribuan member aktif yang berbagi tips, informasi, dan peluang digital setiap harinya.</p>
+      </div>
+      <div class="feature-card glass glass-hover" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon"><i class="fi fi-sr-headset"></i></div>
+        <h3>Support Responsif</h3>
+        <p>Tim bantuan kami siap sedia 24/7 membantu setiap kendala melalui bot chat dan admin manusia langsung.</p>
+      </div>
+      <div class="feature-card glass glass-hover" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-icon"><i class="fi fi-sr-rocket"></i></div>
+        <h3>Update Berkala</h3>
+        <p>Sistem kami diperbarui secara rutin untuk memberikan pengalaman dan akses fitur terbaru bagi seluruh pengguna.</p>
+      </div>
+      <div class="feature-card glass glass-hover" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-icon"><i class="fi fi-sr-wallet"></i></div>
+        <h3>Transaksi Mudah</h3>
+        <p>Mendukung berbagai macam metode pembayaran instan, praktis, dan 100% aman untuk setiap pembelian.</p>
+      </div>
+      <div class="feature-card glass glass-hover" data-aos="fade-up" data-aos-delay="500">
+        <div class="feature-icon"><i class="fi fi-sr-gem"></i></div>
+        <h3>Akses Eksklusif</h3>
+        <p>Dapatkan akses instan ke produk premium, diskon khusus VIP, dan materi yang tidak tersedia di publik.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="info" class="container">
+    <div class="info-grid">
+      <div class="info-card glass glass-hover" data-aos="fade-up" onclick="openModal('privacy')">
+        <div class="info-icon"><i class="fi fi-sr-shield"></i></div>
+        <h3>Kebijakan Privasi</h3>
+        <p>Kami menjaga data pribadi Anda dengan sistem keamanan tingkat tinggi. Tidak ada data yang diperjualbelikan.</p>
+      </div>
+      <div class="info-card glass glass-hover" data-aos="fade-up" data-aos-delay="100" onclick="openModal('help')">
+        <div class="info-icon" style="background: var(--accent-lime);"><i class="fi fi-sr-interrogation"></i></div>
+        <h3>Pusat Bantuan</h3>
+        <p>Butuh panduan? Tim support kami siap membantu 24/7 melalui Telegram dan bot chat resmi.</p>
+      </div>
+      <div class="info-card glass glass-hover" data-aos="fade-up" data-aos-delay="200" onclick="openModal('about')">
+        <div class="info-icon" style="background: var(--text-primary); color: var(--bg-deep);"><i class="fi fi-sr-rocket-lunch"></i></div>
+        <h3>Tentang Kami</h3>
+        <p>Visi kami membangun ekosistem digital yang transparan, bermanfaat, dan memberdayakan komunitas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="container">
+    <div class="contact-wrap glass" data-aos="zoom-in">
+      <div class="section-tag"><i class="fi fi-sr-paper-plane"></i> Direct Link</div>
+      <h2 class="section-title">Terhubung Dengan <span class="text-lime">Kami</span></h2>
+      <p style="color: var(--text-secondary); margin-top: 14px; max-width: 500px; font-weight: 500;">Gunakan link di bawah untuk layanan personal atau bergabung ke grup diskusi.</p>
+      <div class="contact-buttons">
+        <a href="https://t.me/t1975bot" target="_blank" class="btn-contact glass glass-hover">
+          <span class="c-icon"><i class="fi fi-sr-user"></i></span>
+          <div class="c-label">Admin Personal</div>
+          <div class="c-sub">Chat Langsung</div>
+        </a>
+        <a href="https://t.me/Off_luca" target="_blank" class="btn-contact glass glass-hover">
+          <span class="c-icon" style="color: var(--accent-cyan);"><i class="fi fi-sr-megaphone"></i></span>
+          <div class="c-label">Official Channel</div>
+          <div class="c-sub">Update &amp; Promo</div>
+        </a>
+        <a href="https://t.me/Off_luca" target="_blank" class="btn-contact glass glass-hover">
+          <span class="c-icon" style="color: var(--accent-magenta);"><i class="fi fi-sr-messages"></i></span>
+          <div class="c-label">Komunitas</div>
+          <div class="c-sub">Diskusi Member</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom: 16px;">
+            <img src="profil.jpg" alt="LUCA'S ID Logo" class="brand-logo" onerror="this.src='https://ui-avatars.com/api/?name=L+U&background=09090b&color=ccff00&bold=true'" />
+            <span style="font-weight: 800; font-size: 18px;">LUCA'S ID</span>
+          </div>
+          <p>Partner digital terpercaya Anda. Menyediakan solusi kebutuhan digital dengan komunitas yang aktif dan supportif.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn"><i class="fi fi-brands-instagram"></i></a>
+            <a href="https://t.me/Off_luca" target="_blank" class="social-btn"><i class="fi fi-brands-telegram"></i></a>
+            <a href="mailto:admin@lucas-id.xyz" class="social-btn"><i class="fi fi-sr-envelope"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Tautan</h4>
+          <ul>
+            <li><a href="#shop">Toko Digital</a></li>
+            <li><a href="#events">Info Event</a></li>
+            <li><a href="video.html">Koleksi Video</a></li>
+            <li><a href="#services">Fitur Layanan</a></li>
+            <li><a href="#info">Informasi</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Dukungan</h4>
+          <ul>
+            <li><a onclick="toggleChat()">Bot Chat FAQ</a></li>
+            <li><a onclick="openModal('privacy')">Privasi &amp; Syarat</a></li>
+            <li><a onclick="openModal('help')">Pusat Bantuan</a></li>
+            <li><a href="https://t.me/t1975bot" target="_blank">Chat Admin</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 LUCA'S ID Official Platform. Built with Glass-Brutalism.</div>
+    </div>
+  </footer>
+
+  <div class="modal-ov" id="modal-privacy">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('privacy')"><i class="fi fi-sr-cross-small"></i></button>
+      <h2><i class="fi fi-sr-shield" style="color: var(--accent-lime);"></i> Kebijakan Privasi</h2>
+      <div class="privacy-section">
+        <h4>1. Pengumpulan Data</h4>
+        <p>Kami hanya mengumpulkan data yang Anda berikan secara sukarela saat berinteraksi dengan layanan kami, seperti username Telegram atau email untuk keperluan bantuan teknis.</p>
+      </div>
+      <div class="privacy-section">
+        <h4>2. Keamanan Data</h4>
+        <p>Informasi Anda dilindungi dengan sistem keamanan digital yang ketat. Kami tidak pernah membagikan data pribadi kepada pihak ketiga tanpa persetujuan eksplisit dari pengguna.</p>
+      </div>
+      <div class="privacy-section">
+        <h4>3. Penggunaan Cookie</h4>
+        <p>Website ini menggunakan cache lokal untuk meningkatkan performa tanpa melacak aktivitas pribadi di luar platform. Dengan menggunakan website ini, Anda menyetujui syarat dan ketentuan yang berlaku.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-ov" id="modal-help">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('help')"><i class="fi fi-sr-cross-small"></i></button>
+      <h2><i class="fi fi-sr-interrogation" style="color: var(--accent-cyan);"></i> Pusat Bantuan</h2>
+      <div class="privacy-section">
+        <h4>Cara Pembelian</h4>
+        <p>Pilih produk di bagian Toko, klik tombol "Beli Sekarang". Anda akan diarahkan ke admin melalui Telegram untuk proses pembayaran yang aman dan terpercaya.</p>
+      </div>
+      <div class="privacy-section">
+        <h4>Kendala Teknis</h4>
+        <p>Hubungi admin resmi kami di <b>@t1975bot</b> melalui Telegram untuk bantuan seputar akun, pembelian, atau masalah teknis lainnya. Respons dalam 1×24 jam.</p>
+      </div>
+      <div class="privacy-section">
+        <h4>Bot Chat</h4>
+        <p>Gunakan tombol Chat di pojok kanan bawah untuk pertanyaan cepat. Bot kami siap menjawab pertanyaan umum seputar produk dan event secara real-time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-ov" id="modal-about">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('about')"><i class="fi fi-sr-cross-small"></i></button>
+      <h2><i class="fi fi-sr-rocket-lunch" style="color: var(--accent-magenta);"></i> Tentang Kami</h2>
+      <div class="privacy-section">
+        <h4>Visi Kami</h4>
+        <p>LUCA'S ID didirikan untuk menjadi wadah bagi para antusias digital dalam berbagi informasi, event, dan produk digital terkurasi berkualitas tinggi.</p>
+      </div>
+      <div class="privacy-section">
+        <h4>Misi Kami</h4>
+        <p>Membangun ekosistem digital yang transparan, bermanfaat, dan memberdayakan seluruh anggota komunitas — dari pengguna biasa hingga pelaku bisnis digital.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-window glass" id="chat-bot">
+    <div class="chat-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="chat-avatar">
+          <img src="profil.jpg" alt="Bot" onerror="this.src='https://ui-avatars.com/api/?name=L+H&background=ccff00&color=000&bold=true'" style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>
+        <div>
+          <h4>Luca HelpCenter</h4>
+          <div class="chat-online"><span class="chat-online-dot"></span> Online sekarang</div>
+        </div>
+      </div>
+      <button class="chat-min-btn" onclick="toggleChat()"><i class="fi fi-sr-angle-down"></i></button>
+    </div>
+    <div class="chat-messages" id="chat-content">
+      <div class="message-bubble msg-bot">
+        <i class="fi fi-sr-hand-wave"></i> Halo! Saya asisten digital Luca's ID<br />
+        Pilih pertanyaan di bawah atau ketik manual ya! 👇
+      </div>
+    </div>
+    <div class="quick-replies" id="quick-replies">
+      <button class="qr-btn" onclick="botResponse('Toko')"><i class="fi fi-sr-shopping-cart"></i> Beli Produk?</button>
+      <button class="qr-btn" onclick="botResponse('Event')"><i class="fi fi-sr-calendar"></i> Info Event?</button>
+      <button class="qr-btn" onclick="botResponse('Web')"><i class="fi fi-sr-globe"></i> Apa itu Web ini?</button>
+      <button class="qr-btn" onclick="botResponse('Keamanan')"><i class="fi fi-sr-shield-check"></i> Apakah Aman?</button>
+      <button class="qr-btn" onclick="botResponse('Admin')"><i class="fi fi-sr-user"></i> Hubungi Admin</button>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="user-input" class="chat-input" placeholder="Tulis pesan manual..." />
+      <button class="chat-send" onclick="sendMessage()"><i class="fi fi-sr-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <button class="chat-fab" onclick="toggleChat()" id="chat-fab" title="Chat dengan kami">
+    <i class="fi fi-sr-comment-alt"></i>
+    <div class="chat-fab-notif" id="chat-badge">1</div>
+  </button>
+
+  <div id="notif-bar" class="glass">
+    <div class="notif-icon-wrap" id="notif-icon"><i class="fi fi-sr-bell-ring"></i></div>
+    <div class="notif-content" style="flex:1;">
+      <h4 id="notif-title">Menghubungkan...</h4>
+      <p id="notif-msg">Mengambil data terbaru dari Google Sheets.</p>
+    </div>
+    <button class="btn-icon" onclick="hideNotif()" style="width: 32px; height: 32px; box-shadow: none;"><i class="fi fi-sr-cross-small"></i></button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const currentTheme = body.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('luca_theme', newTheme);
+      document.getElementById('theme-icon').className = newTheme === 'light' ? 'fi fi-sr-moon' : 'fi fi-sr-sun';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('luca_theme') || 'dark';
+      if (savedTheme === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        document.getElementById('theme-icon').className = 'fi fi-sr-moon';
+      }
+    });
+
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxopstAKmTRJMdNT-Ak0P0bZcyo26-s-o7BFhrPz-yKVGIGFojYVDP2chd3V33G-3Mnjw/exec';
+
+    AOS.init({ duration: 950, once: true, offset: 60 });
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+      let cur = '';
+      document.querySelectorAll('section[id]').forEach(s => {
+        if (window.scrollY >= s.offsetTop - 150) cur = s.id;
+      });
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+      });
+    });
+
+    function initCounters() {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          const target = +el.dataset.count;
+          const suffix = el.dataset.suffix || '';
+          let v = 0;
+          const step = Math.max(1, Math.ceil(target / 90));
+          const itv = setInterval(() => {
+            v = Math.min(v + step, target);
+            el.textContent = v.toLocaleString('id-ID') + suffix;
+            if (v >= target) clearInterval(itv);
+          }, 18);
+          io.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('[data-count]').forEach(c => io.observe(c));
+    }
+
+    function setStatusBadge(id, type, label) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.innerHTML = `<span class="fetch-status ${type}"><span class="dot"></span>${label}</span>`;
+      }
+    }
+
+    function formatRupiah(str) {
+      const n = parseInt(String(str).replace(/\D/g, ''));
+      return isNaN(n) ? str : 'Rp ' + n.toLocaleString('id-ID');
+    }
+
+    function imgBlock(url, alt, imgCls, phCls, phEmoji) {
+      if (url) {
+        return `
+          <div class="item-img-wrap">
+            <img class="${imgCls}" src="${url}" alt="${alt}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="item-ph ${phCls}" style="display:none">${phEmoji}</div>
+          </div>`;
+      }
+      return `
+        <div class="item-img-wrap">
+          <div class="item-ph ${phCls}">${phEmoji}</div>
+        </div>`;
+    }
+
+    function renderStats(data) {
+      if (!data || !data.length) return;
+      const grid = document.getElementById('stats-grid');
+      grid.innerHTML = data.map((item, i) => {
+        const isSuffix = /kepuasan|%|persen/i.test(item.NamaStatistik) ? '%' : '';
+        const count = parseInt(String(item.Nilai).replace(/\D/g, '')) || 0;
+        return `
+          <div class="stat-card glass" data-aos="fade-up" data-aos-delay="${i * 80}">
+            <div class="stat-num" data-count="${count}" data-suffix="${isSuffix}">0</div>
+            <div class="stat-label">${item.NamaStatistik}</div>
+          </div>`;
+      }).join('');
+      AOS.refresh();
+      initCounters();
+      setStatusBadge('stats-status', 'success', 'Live dari Google Sheets');
+    }
+
+    function renderEvents(data) {
+      const c = document.getElementById('events-container');
+      if (!data || !data.length) {
+        c.innerHTML = `
+          <div class="error-state">
+            <i class="fi fi-sr-mailbox"></i>
+            <p>Belum ada event tersedia.<br />Pantau terus untuk update!</p>
+          </div>`;
+        return;
+      }
+      c.innerHTML = `
+        <div class="data-grid">
+          ${data.map((ev, i) => `
+            <div class="item-card glass glass-hover" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}">
+              ${imgBlock(ev.LinkGambar, ev.NamaEvent, 'event-img', 'event-ph', '<i class="fi fi-sr-calendar"></i>')}
+              <div class="item-body">
+                <span class="event-hot-badge">HOT EVENT</span>
+                <div class="event-date"><i class="fi fi-sr-calendar"></i> ${ev.Tanggal || 'Segera Hadir'}</div>
+                <div class="event-title">${ev.NamaEvent}</div>
+                <div class="event-desc">${ev.Deskripsi || ''}</div>
+                <a href="${ev.LinkEvent || '#'}" target="_blank" class="item-btn event-btn"><i class="fi fi-sr-arrow-right"></i> Join Event</a>
+              </div>
+            </div>`).join('')}
+        </div>`;
+      AOS.refresh();
+    }
+
+    function renderShop(data) {
+      const c = document.getElementById('shop-container');
+      if (!data || !data.length) {
+        c.innerHTML = `
+          <div class="error-state">
+            <i class="fi fi-sr-shopping-cart"></i>
+            <p>Belum ada produk tersedia.<br />Segera hadir produk pilihan!</p>
+          </div>`;
+        return;
+      }
+
+      function countStock(linkBeli) {
+        if (!linkBeli) return 0;
+        return linkBeli.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
+      }
+
+      c.innerHTML = `
+        <div class="data-grid">
+          ${data.map((p, i) => {
+            const stock = countStock(p.LinkBeli);
+            const stockBadgeStyle = `position:absolute;top:8px;left:8px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:900;letter-spacing:0.5px;text-transform:uppercase;border:2px solid #000;box-shadow:2px 2px 0px ${stock === 0 ? 'var(--accent-magenta)' : 'var(--accent-lime)'};background:${stock === 0 ? 'var(--accent-magenta)' : 'var(--accent-lime)'};color:#000;`;
+            const isHabis = stock === 0;
+            const btnHtml = isHabis
+              ? `<span class="item-btn" style="background:var(--text-muted);color:#000;border-color:#000;box-shadow:none;cursor:not-allowed;opacity:0.6;"><i class="fi fi-sr-cross-circle"></i> <span data-i18n="shop_soldout">Habis</span></span>`
+              : `<a href="shop.html?produk=${encodeURIComponent(p.NamaProduk)}" class="item-btn shop-btn"><i class="fi fi-sr-shopping-cart"></i> <span data-i18n="shop_buy">Beli Sekarang</span></a>`;
+            return `
+            <div class="item-card glass glass-hover" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}">
+              <div style="position:relative;">
+                ${imgBlock(p.LinkGambar, p.NamaProduk, 'shop-img', 'shop-ph', '<i class="fi fi-sr-box-alt"></i>')}
+                <span style="${stockBadgeStyle}">Stok: ${stock}</span>
+              </div>
+              <div class="item-body">
+                <div class="shop-title">${p.NamaProduk}</div>
+                <div class="shop-price">${formatRupiah(p.Harga)}</div>
+                ${btnHtml}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`;
+      AOS.refresh();
+    }
+
+    function renderError(id, label) {
+      document.getElementById(id).innerHTML = `
+        <div class="error-state">
+          <i class="fi fi-sr-triangle-warning"></i>
+          <p>Gagal memuat data ${label}.<br />Periksa koneksi atau hubungi admin.</p>
+          <button class="retry-btn" onclick="fetchDataFromGAS()"><i class="fi fi-sr-refresh"></i> Coba Lagi</button>
+        </div>`;
+    }
+
+    async function fetchDataFromGAS() {
+      const loadHtml = msg => `
+        <div class="skeleton-box glass">
+          <div class="data-placeholder">
+            <div class="spinner"><i class="fi fi-sr-spinner-alt"></i></div>
+            <p>${msg}</p>
+          </div>
+        </div>`;
+        
+      document.getElementById('events-container').innerHTML = loadHtml('Memuat data event...');
+      document.getElementById('shop-container').innerHTML = loadHtml('Memuat produk shop...');
+      setStatusBadge('stats-status', 'loading', 'Memuat statistik...');
+
+      if (GAS_URL.includes('GANTI_DENGAN_URL')) {
+        setStatusBadge('stats-status', 'error', 'GAS URL belum dikonfigurasi');
+        renderError('events-container', 'event');
+        renderError('shop-container', 'produk');
+        showNotif('<i class="fi fi-sr-settings"></i>', 'Mode Statis', 'Ganti GAS_URL dengan URL Web App Anda.');
+        return;
+      }
+
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 15000);
+        const res = await fetch(GAS_URL, { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        if (Array.isArray(json.stats)) renderStats(json.stats);
+        else setStatusBadge('stats-status', 'error', 'Data stats kosong');
+
+        if (Array.isArray(json.events)) renderEvents(json.events);
+        else renderError('events-container', 'event');
+
+        if (Array.isArray(json.shop)) renderShop(json.shop);
+        else renderError('shop-container', 'produk');
+
+        showNotif('<i class="fi fi-sr-check-circle"></i>', 'Data Berhasil Dimuat', 'Diperbarui langsung dari Google Sheets.');
+      } catch (err) {
+        const isTO = err.name === 'AbortError';
+        setStatusBadge('stats-status', 'error', isTO ? 'Timeout' : 'Gagal terhubung');
+        renderError('events-container', 'event');
+        renderError('shop-container', 'produk');
+        showNotif('<i class="fi fi-sr-cross-circle"></i>', 'Koneksi Gagal', isTO ? 'Server GAS tidak merespons.' : err.message);
+      }
+    }
+
+    let notifTimer;
+    function showNotif(icon, title, msg) {
+      document.getElementById('notif-icon').innerHTML = icon;
+      document.getElementById('notif-title').textContent = title;
+      document.getElementById('notif-msg').textContent = msg;
+      const bar = document.getElementById('notif-bar');
+      bar.classList.remove('active');
+      clearTimeout(notifTimer);
+      setTimeout(() => {
+        bar.classList.add('active');
+        notifTimer = setTimeout(() => bar.classList.remove('active'), 6500);
+      }, 300);
+    }
+
+    function hideNotif() {
+      document.getElementById('notif-bar').classList.remove('active');
+    }
+
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.modal-ov').forEach(ov => {
+      ov.addEventListener('click', e => {
+        if (e.target === ov) {
+          ov.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-ov.active').forEach(m => {
+          m.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+        if (document.getElementById('chat-bot').classList.contains('active')) {
+          toggleChat();
+        }
+      }
+    });
+
+    let chatOpened = false;
+    function toggleChat() {
+      const bot = document.getElementById('chat-bot');
+      const badge = document.getElementById('chat-badge');
+      const open = bot.classList.toggle('active');
+      if (open && !chatOpened) {
+        chatOpened = true;
+        badge.style.display = 'none';
+      }
+    }
+
+    const chatContent = document.getElementById('chat-content');
+
+    function appendMessage(html, role) {
+      const msg = document.createElement('div');
+      msg.className = `message-bubble ${role === 'bot' ? 'msg-bot' : 'msg-user'}`;
+      msg.innerHTML = html;
+      chatContent.appendChild(msg);
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    const botReplies = {
+      'Toko': 'Pilih produk di bagian Toko, klik <b>Beli Sekarang</b>. Anda akan diarahkan ke admin Telegram (@t1975bot) untuk pembayaran yang aman. <i class="fi fi-sr-shopping-cart"></i>',
+      'Event': 'Cek section Event di atas untuk event aktif saat ini! Daftar dan ikuti instruksi admin untuk berpartisipasi. <i class="fi fi-sr-sparkles"></i>',
+      'Web': 'LUCA\'S ID adalah platform digital all-in-one yang menyediakan layanan premium, informasi event, dan komunitas terpercaya! <i class="fi fi-sr-rocket-lunch"></i>',
+      'Keamanan': '100% Aman! Semua transaksi diawasi oleh admin terpercaya, dan file kami melewati tahap verifikasi. <i class="fi fi-sr-shield-check"></i>',
+      'Admin': 'Butuh bantuan? Hubungi admin resmi kami di <a href="https://t.me/t1975bot" target="_blank" style="color:#00f0ff;font-weight:bold;">@t1975bot</a> via Telegram. <i class="fi fi-sr-user"></i>'
+    };
+
+    function botResponse(key) {
+      appendMessage(key, 'user');
+      setTimeout(() => {
+        appendMessage(botReplies[key] || 'Terima kasih! Tim kami akan segera merespons.', 'bot');
+      }, 600);
+    }
+
+    function sendMessage() {
+      const inp = document.getElementById('user-input');
+      const val = inp.value.trim();
+      if (!val) return;
+      appendMessage(val, 'user');
+      inp.value = '';
+      setTimeout(() => {
+        appendMessage('Pesan Anda telah diterima! Admin kami akan merespons secepatnya, atau hubungi langsung admin di <a href="https://t.me/t1975bot" target="_blank" style="color:#00f0ff;font-weight:bold;">@t1975bot</a>. <i class="fi fi-sr-hands-clapping"></i>', 'bot');
+      }, 800);
+    }
+
+    document.getElementById('user-input').addEventListener('keypress', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    
+    document.onkeydown = function(e) {
+      if (e.key === 'F12') return false;
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) return false;
+      if (e.ctrlKey && e.key === 'U') return false;
+    };
+
+    const i18n = {
+      id: {
+        nav_home: 'Beranda', nav_shop: 'Toko', nav_events: 'Event', nav_video: 'Video',
+        nav_features: 'Fitur', nav_info: 'Informasi', nav_chat: 'Chat', nav_join: 'Gabung',
+        hero_badge: 'Official Platform & Premium Community',
+        hero_sub: 'Platform all-in-one untuk kebutuhan digital Anda — dari produk premium, event komunitas, hingga perlindungan privasi tingkat tinggi.',
+        hero_btn_shop: 'Lihat Toko', hero_btn_event: 'Cek Event', hero_btn_video: 'Lihat Video',
+        shop_tag: 'Marketplace', shop_title: 'Produk', shop_title2: 'Pilihan',
+        shop_sub: 'Produk digital kurasi dengan harga terbaik untuk komunitas.',
+        shop_loading: 'Menghubungkan ke katalog shop...',
+        shop_all: 'Lihat Semua Produk →',
+        shop_buy: 'Beli Sekarang', shop_soldout: 'Habis',
+        event_tag: 'Schedule', event_title: 'Event', event_title2: 'Mendatang',
+        event_sub: 'Ikuti event eksklusif komunitas dan raih hadiah menarik.',
+        event_loading: 'Memuat data event dari server...', event_all: 'Lihat Semua Event →',
+      },
+      en: {
+        nav_home: 'Home', nav_shop: 'Shop', nav_events: 'Events', nav_video: 'Video',
+        nav_features: 'Features', nav_info: 'Info', nav_chat: 'Chat', nav_join: 'Join',
+        hero_badge: 'Official Platform & Premium Community',
+        hero_sub: 'Your all-in-one digital platform — premium products, community events, and top-tier privacy protection.',
+        hero_btn_shop: 'Visit Shop', hero_btn_event: 'Check Events', hero_btn_video: 'Watch Videos',
+        shop_tag: 'Marketplace', shop_title: 'Featured', shop_title2: 'Products',
+        shop_sub: 'Curated digital products at the best prices for our community.',
+        shop_loading: 'Connecting to shop catalog...',
+        shop_all: 'View All Products →',
+        shop_buy: 'Buy Now', shop_soldout: 'Sold Out',
+        event_tag: 'Schedule', event_title: 'Upcoming', event_title2: 'Events',
+        event_sub: 'Join exclusive community events and win amazing prizes.',
+        event_loading: 'Loading event data from server...', event_all: 'View All Events →',
+      }
+    };
+
+    let currentLang = localStorage.getItem('luca_lang') || 'id';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('luca_lang', lang);
+      const dict = i18n[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.getElementById('lang-btn').title = lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia';
+    }
+
+    function toggleLang() {
+      applyLang(currentLang === 'id' ? 'en' : 'id');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLang(currentLang);
+      fetchDataFromGAS();
+    });
+  </script>
+</body>
+</html>
